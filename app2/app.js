@@ -1,78 +1,33 @@
-import renderSplash from "./screens/splash_screen.js";
-import renderStart from "./screens/start_screen.js";
-import renderRegister from "./screens/register_screen.js";
-import renderQuestionSelect from "./screens/questionsselect_screen.js";
-import renderOutfitSelection from "./screens/outfitselection_screen.js";
-import renderLoading from "./screens/loading_screen.js";
-import renderThanks from "./screens/thanks_screen.js";
-import renderEmailNotification from "./screens/emailnotification_screen.js";
+document.addEventListener("DOMContentLoaded", function () {
+  const btnComenzar = document.getElementById("btn-comenzar");
+  const splash = document.getElementById("splash-inicial");
+  const registro = document.getElementById("registro");
 
-const socket = io("/", { path: "/real-time" });
-
-function clearScripts() {
-  document.getElementById("app").innerHTML = "";
-}
-
-let route = { path: "/", data: {} };
-renderRoute(route);
-
-function renderRoute(currentRoute) {
-  switch (currentRoute?.path) {
-    case "/":
-      clearScripts();
-      renderSplash(currentRoute?.data);
-      break;
-    case "/start":
-      clearScripts();
-      renderStart(currentRoute?.data);
-      break;
-    case "/register":
-      clearScripts();
-      renderRegister(currentRoute?.data);
-      break;
-    case "/questions":
-      clearScripts();
-      renderQuestionSelect(currentRoute?.data);
-      break;
-    case "/outfit":
-      clearScripts();
-      renderOutfitSelection(currentRoute?.data);
-      break;
-    case "/loading":
-      clearScripts();
-      renderLoading(currentRoute?.data);
-      break;
-    case "/thanks":
-      clearScripts();
-      renderThanks(currentRoute?.data);
-      break;
-    case "/email":
-      clearScripts();
-      renderEmailNotification(currentRoute?.data);
-      break;
-    default:
-      const app = document.getElementById("app");
-      app.innerHTML = `<h1>404 - Not Found</h1><p>The page you are looking for does not exist.</p>`;
-  }
-}
-
-function navigateTo(path, data) {
-  route = { path, data };
-  renderRoute(route);
-}
-
-async function makeRequest(url, method, body) {
-  const BASE_URL = "http://localhost:5050";
-  let response = await fetch(`${BASE_URL}${url}`, {
-    method: method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
+  btnComenzar.addEventListener("click", function () {
+    splash.style.display = "none";       // Oculta la splash
+    registro.style.display = "block";    // Muestra el registro
   });
+});
 
-  response = await response.json();
-  return response;
-}
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("form-registro");
 
-export { navigateTo, socket, makeRequest };
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Evita que se recargue la página
+
+    // Obtener valores de los inputs
+    const nombre = document.getElementById("nombre").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const talla = document.getElementById("talla").value.trim();
+
+    // Crear objeto con los datos
+    const datosUsuario = {
+      nombre: nombre,
+      email: email,
+      talla: talla
+    };
+
+    // Mostrar en consola
+    console.log("Datos del usuario:", datosUsuario);
+  });
+});
