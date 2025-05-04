@@ -1,7 +1,7 @@
 // 🔧 socket.service.js
 let io;
 
-const { getQuestionById, getTotalQuestions } = require("../db/questions.db.js");
+const { getQuestionById } = require("../db/questions.db.js");
 
 const initSocketInstance = (httpServer) => {
   const { Server } = require("socket.io");
@@ -12,35 +12,43 @@ const initSocketInstance = (httpServer) => {
     },
   });
 
-  // Manejo de conexión de cada cliente
   io.on("connection", (socket) => {
     console.log(`🔌 Usuario conectado: ${socket.id}`);
 
-    // ✅ Escuchar respuesta del jugador
+    // ✅ Jugador responde una opción del quiz
     socket.on("respuestaSeleccionada", (respuesta) => {
       console.log(`✅ ${socket.id} respondió:`, respuesta);
-      // Aquí puedes guardar las respuestas si deseas
+      // Aquí podrías guardar la respuesta en la DB si lo deseas
     });
 
-    // ✅ Escuchar solicitud para avanzar a la siguiente pregunta
+    // ✅ Solicita la siguiente pregunta
     socket.on("pedir-siguiente-pregunta", (numeroPregunta) => {
       const siguientePregunta = getQuestionById(numeroPregunta);
 
       if (siguientePregunta) {
-        // ✅ Emitir a todos (App1 y App2)
         io.emit("siguiente-pregunta", {
           question: siguientePregunta,
           preguntaActual: numeroPregunta,
         });
       } else {
-        // ✅ Fin del juego: notificar a todos
         io.emit("juego-terminado");
       }
+    });
+
+    // ✅ NUEVO: Usuario seleccionó un outfit
+    socket.on("outfit-selected", ({ outfitId }) => {
+      console.log(`👗 Outfit seleccionado por ${socket.id}: Opción ${outfitId}`);
+
+      // Aquí podrías guardar outfitId si lo necesitas
+
+      // Emitimos las pantallas finales
+      io.emit("show-email-screen");       // app2
+      io.emit("show-email-big-screen");   // app1
     });
   });
 };
 
-// ✅ Emitir eventos globales (como start-game desde REST API)
+// ✅ Emitir eventos desde controladores (REST)
 const emitEvent = (eventName, data) => {
   if (!io) throw new Error("Socket.io instance is not initialized");
   io.emit(eventName, data);

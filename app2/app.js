@@ -52,6 +52,13 @@ socket.on("show-outfit-selection", async () => {
   module.default();
 });
 
+// 🆕 Pantalla de notificación por email
+socket.on("show-email-screen", async () => {
+  const module = await import("./screens/emailnotification_screen.js");
+  clearApp();
+  module.default();
+});
+
 // 🐞 Debug log
 socket.onAny((event, ...args) => {
   console.log("📥 Evento recibido en app2:", event, args);

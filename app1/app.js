@@ -43,9 +43,17 @@ socket.on("juego-terminado", async () => {
   module.default();
 });
 
-// 🆕 Mostrar pantalla final con outfits generados por IA
+// 🆕 Mostrar pantalla de selección de outfit en app1
 socket.on("show-outfit-selection", async () => {
   const module = await import("./screens/OutfitSelection_big_screen.js");
+  clearScripts();
+  module.default();
+});
+
+// 🆕 Mostrar pantalla final de notificación en app1 (CORREGIDO)
+socket.on("show-email-big-screen", async () => {
+  console.log("📬 Recibido evento show-email-big-screen en app1");
+  const module = await import("./screens/emailnotification_big.js");
   clearScripts();
   module.default();
 });
