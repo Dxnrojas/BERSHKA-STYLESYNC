@@ -1,6 +1,7 @@
 {
-  "name": "bershka-stylesync",
+  "name": "server-practice",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,13 +10,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0",
+    "express": "^4.21.2",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.9"
   }
 }
