@@ -1,5 +1,6 @@
 import renderSplashScreen from "./screens/splash_screen.js";
 import renderRegisterScreen from "./screens/register_screen.js";
+import renderStartBtnScreen from "./screens/startbtn_screen.js"; // 👈 nuevo import
 
 const socket = io("/", { path: "/real-time" });
 
@@ -13,10 +14,16 @@ socket.on("next-screen", () => {
   renderSplashScreen();
 });
 
-// 👉 Escucha evento para mostrar pantalla de formulario (después de comenzar)
+// 👉 Escucha evento para mostrar pantalla de formulario (después de "Comenzar")
 socket.on("show-form-screens", () => {
   clearApp();
   renderRegisterScreen();
+});
+
+// 👉 Escucha evento para mostrar botón de iniciar juego (después del registro)
+socket.on("show-instruction-screens", () => {
+  clearApp();
+  renderStartBtnScreen();
 });
 
 // 👉 Función para hacer fetch a endpoints del servidor
@@ -33,4 +40,4 @@ async function makeRequest(url, method, body) {
   return await response.json();
 }
 
-export { makeRequest };
+export { makeRequest, socket };

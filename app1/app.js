@@ -1,29 +1,31 @@
+// ✅ app1/app.js actualizado
 import renderQRScreen from "./screens/qr_screen.js";
-import renderEsperaFormularioScreen from "./screens/esperafomulario_screen.js";
-
-const socket = io("/", { path: "/real-time" });
 
 function clearScripts() {
   document.getElementById("app").innerHTML = "";
 }
 
-let route = { path: "/", data: {} };
+// 👉 Mostrar QR de inicio
+clearScripts();
+renderQRScreen();
 
-switch (route.path) {
-  case "/":
-    clearScripts();
-    renderQRScreen(route.data);
-    break;
-  default:
-    document.getElementById("app").innerHTML = `<h1>404 - Not Found</h1>`;
-}
+// 👉 WebSocket
+import { io } from "https://cdn.socket.io/4.6.1/socket.io.esm.min.js";
+const socket = io("/", { path: "/real-time" });
 
-// Escuchar evento cuando el usuario hace clic en "Comenzar" desde app2
-socket.on("show-form-screens", () => {
+socket.on("show-form-screens", async () => {
+  const module = await import("./screens/esperafomulario_screen.js");
   clearScripts();
-  renderEsperaFormularioScreen();
+  module.default();
 });
 
+socket.on("show-instruction-screens", async () => {
+  const module = await import("./screens/instructions_screen.js"); // ✅ corregido
+  clearScripts();
+  module.default();
+});
+
+// 👉 Peticiones al servidor
 async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
   let response = await fetch(`${BASE_URL}${url}`, {
@@ -31,10 +33,10 @@ async function makeRequest(url, method, body) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   });
 
   return await response.json();
 }
 
-export { socket, makeRequest };
+export { makeRequest };
