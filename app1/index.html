@@ -5,19 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App 1</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link
         href=""
         rel="icon" type="image/x-icon">
 </head>
 
 <body>
-    <section id="pantalla-splash" class="pantalla-activa">
+    <section id="pantalla-splash">
         <div class="contenedor-splash">
           <div class="contenido-izquierda">
             <div class="logo">
-              <h1><span class="marca">BERSHKA</span><br><span class="subtitulo">STYLE SYNC</span></h1>
-              <img src="ruta-del-icono.png" alt="Icono Bershka" class="icono-logo" />
+              <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjMyMzMwMywiZXhwIjoxOTA0MDAzMzAzfQ.LG2yzFcOvUiNddKmSLGE7furiarcZnHKUkfiAG_04Rs" width="150px" alt="Icono Bershka" class="icono-logo" />
             </div>
             <div class="texto">
               <h2>Construyendo el <span class="resaltado">nuevo futuro</span> de la moda...</h2>
@@ -38,13 +37,40 @@
         </div>
       </section>
 
-      <section id="pantalla-instrucciones" >
-        <div class="contenedor-instrucciones">
-          <div class="logo-superior">
-            <img src="ruta-del-logo-blanco.png" alt="Logo Bershka Style Sync" />
+      <section id="pantalla-momento-fashion" style="display: none">
+        <div class="contenedor-momento">
+      
+          <!-- Título motivacional -->
+          <h2 class="titulo-momento">
+            Tu momento fashion: <span class="resaltado">¡Llénalo y Enciéndelo!</span>
+          </h2>
+      
+          <!-- Texto motivacional -->
+          <p class="texto-momento">
+            ¡Deja de stalkear outfits y empieza a vivirlos! Tu yo fashionista te está esperando...
+            ¡al otro lado de este formulario! No lo hagas esperar
+          </p>
+      
+          <!-- Imagen animada o decorativa -->
+          <div class="imagen-momento">
+            <img src="ruta-imagen-corazon.png" alt="Ilustración corazón motivacional" />
           </div>
       
-          <div class="contenido-instrucciones">
+          <!-- Logo -->
+          <div class="logo-superior">
+            <img src="ruta-logo-blanco.png" alt="Logo Bershka Style Sync" />
+          </div>
+      
+        </div>
+      </section>
+      
+
+      <section id="pantalla-instrucciones" style="display: none">
+          <div class="logo-superior">
+            <img  src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjMyMzMwMywiZXhwIjoxOTA0MDAzMzAzfQ.LG2yzFcOvUiNddKmSLGE7furiarcZnHKUkfiAG_04Rs" width="150px" alt="Logo Bershka Style Sync" />
+          </div>
+      
+          <div class="contenido-instrucciones" style="display: none">
             <h2>Instrucciones</h2>
             <p>
               A continuación, aparecerán una serie de preguntas en esta pantalla. En tu celular verás
@@ -62,14 +88,18 @@
               Cuando estés listo, <span class="resaltado">toca el ícono en tu celular para comenzar</span>
             </p>
           </div>
-        </div>
       </section>
 
       <section id="pantalla-pregunta"  style="display: none">
         <div class="contenedor-pregunta">
           
           <!-- Título de pregunta (número) -->
-          <h2 id="numero-pregunta">Pregunta #1</h2>
+          <div class="titulo">
+            <h2 id="responsive-logo">Pregunta #1</h2>
+            <img  src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaLogo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthTG9nby5wbmciLCJpYXQiOjE3NDYzMjMyNzcsImV4cCI6MTkwNDAwMzI3N30.NLB4dwLeEVEaSQ_VqBpbZlOm2E3RAarJpifM43P4op4" width="30px" alt="Logo Bershka Style Sync" />
+          </div>
+      
+          
       
           <!-- Imagen principal de la pregunta -->
           <div class="imagen-pregunta">
@@ -100,7 +130,7 @@
         </div>
       </section>
 
-      <section id="pantalla-cargando-ia" class="pantalla-oculta">
+      <section id="pantalla-cargando-ia" style="display: none">
         <div class="contenedor-cargando">
           
           <!-- Ícono de carga animado -->
@@ -125,9 +155,64 @@
         </div>
       </section>
       
-
+      <section id="pantalla-resultados" style="display: none">
+        <div class="contenedor-resultados">
+      
+          <!-- Título principal -->
+          <h2 class="titulo-resultados">¡Felicidades fashionista!</h2>
+          <p class="subtitulo-resultados">
+            Selecciona la opción que más te guste en tu celular
+          </p>
+      
+          <!-- Contenedor de outfits -->
+          <div class="opciones-outfits">
+      
+            <!-- Opción 1 -->
+            <div class="outfit-opcion" data-opcion="1">
+              <img src="ruta-outfit1.jpg" alt="Outfit sugerido 1" class="imagen-outfit" />
+              <img src="icono1.svg" alt="Ícono opción 1" class="icono-outfit" />
+            </div>
+      
+            <!-- Opción 2 -->
+            <div class="outfit-opcion" data-opcion="2">
+              <img src="ruta-outfit2.jpg" alt="Outfit sugerido 2" class="imagen-outfit" />
+              <img src="icono2.svg" alt="Ícono opción 2" class="icono-outfit" />
+            </div>
+      
+            <!-- Opción 3 -->
+            <div class="outfit-opcion" data-opcion="3">
+              <img src="ruta-outfit3.jpg" alt="Outfit sugerido 3" class="imagen-outfit" />
+              <img src="icono3.svg" alt="Ícono opción 3" class="icono-outfit" />
+            </div>
+      
+          </div>
+      
+        </div>
+      </section>
       
 
+      <section id="pantalla-final" style="display: none">
+        <div class="contenedor-final">
+      
+          <!-- Mensaje principal -->
+          <h2 class="titulo-final">¡Felicidades fashionista!</h2>
+          <p class="subtitulo-final">
+            Esta es tu opción ideal, revisa tu correo para comprar tu outfit
+          </p>
+      
+          <!-- Imagen del outfit seleccionado -->
+          <div class="outfit-final">
+            <img src="ruta-outfit-final.jpg" alt="Outfit final recomendado" />
+          </div>
+      
+          <!-- Aviso de Gmail -->
+          <div class="aviso-correo">
+            <img src="logo-gmail.png" alt="Logo Gmail" class="icono-correo" />
+            <p><strong>Revisa tu correo</strong> para ver tu atuendo personalizado y los enlaces para comprar prendas similares</p>
+          </div>
+      
+        </div>
+      </section>
       
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
