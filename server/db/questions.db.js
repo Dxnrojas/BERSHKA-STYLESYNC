@@ -1,6 +1,3 @@
-let currentQuestionIndex = 0;
-let responses = []; // Se guardan las respuestas seleccionadas
-
 const questions = [
   {
     id: 1,
@@ -84,30 +81,11 @@ const questions = [
   },
 ];
 
-const getCurrentQuestion = () => {
-  return questions[currentQuestionIndex];
-};
-
-const getNextQuestion = () => {
-  currentQuestionIndex++;
-  return questions[currentQuestionIndex] || null;
-};
-
-const addResponse = (answer) => {
-  responses.push(answer);
-};
-
-const getAllResponses = () => responses;
-
-const resetQuiz = () => {
-  currentQuestionIndex = 0;
-  responses = [];
-};
+// ✅ Funciones sin estado compartido
+const getQuestionById = (id) => questions.find(q => q.id === id);
+const getTotalQuestions = () => questions.length;
 
 module.exports = {
-  getCurrentQuestion,
-  getNextQuestion,
-  addResponse,
-  getAllResponses,
-  resetQuiz,
+  getQuestionById,
+  getTotalQuestions,
 };

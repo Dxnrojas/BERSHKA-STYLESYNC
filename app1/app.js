@@ -29,31 +29,24 @@ socket.on("show-instruction-screens", async () => {
 });
 
 // 👉 Evento: iniciar el juego → cargar primera pregunta
-socket.on("start-game", async () => {
-  const response = await fetch("http://localhost:5050/quiz/current-question");
-  const question = await response.json();
-
+socket.on("start-game", async (question) => {
   const module = await import("./screens/question_screen.js");
   clearScripts();
-  module.default(question); // ✅ pasamos pregunta inicial
+  module.default(question); // ✅ pasamos la pregunta
 });
 
-// ✅ Evento: siguiente pregunta dinámica (enviada desde el servidor)
-socket.on("next-question", async (question) => {
+// ✅ Evento: siguiente pregunta dinámica desde App2
+socket.on("siguiente-pregunta", async ({ question }) => {
   const module = await import("./screens/question_screen.js");
   clearScripts();
-  module.default(question); // ✅ cargamos la nueva pregunta
+  module.default(question); // ✅ actualiza con la nueva pregunta
 });
 
-// ✅ Evento: fin del cuestionario
-socket.on("quiz-finished", () => {
+// ✅ Evento: fin del cuestionario → pantalla de loading
+socket.on("juego-terminado", async () => {
+  const module = await import("./screens/loading_big_screen.js");
   clearScripts();
-  document.getElementById("app").innerHTML = `
-    <section style="text-align: center; padding: 3rem;">
-      <h1>¡Gracias por participar! 🧡</h1>
-      <p>Tu estilo está siendo analizado para darte una recomendación perfecta.</p>
-    </section>
-  `;
+  module.default();
 });
 
 // 👉 Función reutilizable para peticiones al backend

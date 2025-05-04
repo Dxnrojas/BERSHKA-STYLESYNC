@@ -1,7 +1,7 @@
 // ✅ server/controllers/start_game.controller.js
 
 const { getAllUsers } = require("../db/users.db");
-const { getCurrentQuestion } = require("../db/questions.db");
+const { getQuestionById } = require("../db/questions.db");
 const { emitEvent } = require("../services/socket.service");
 
 const handleStartGame = async (req, res) => {
@@ -18,10 +18,10 @@ const handleStartGame = async (req, res) => {
       return res.status(400).json({ error: "Solo se permite un jugador a la vez." });
     }
 
-    // ✅ Obtenemos la primera pregunta
-    const currentQuestion = getCurrentQuestion();
+    // ✅ Obtener la primera pregunta por ID
+    const currentQuestion = getQuestionById(1);
 
-    // ✅ Emitimos el evento 'start-game' con la primera pregunta como payload
+    // ✅ Emitir evento para iniciar el juego con la primera pregunta
     emitEvent("start-game", currentQuestion);
 
     res.status(200).json({ message: "Juego iniciado correctamente" });

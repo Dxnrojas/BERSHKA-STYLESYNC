@@ -1,0 +1,64 @@
+[
+  {
+    "name": "Juli",
+    "email": "julisss@gmail.com",
+    "size": "XXXL",
+    "created_at": "2025-05-04T19:30:23.655Z",
+    "respuestas": [
+      {
+        "preguntaId": 1,
+        "pregunta": "¿Cómo describirías tu estilo personal?",
+        "respuesta": "Deportivo - Athleisure"
+      },
+      {
+        "preguntaId": 2,
+        "pregunta": "¿Qué tipo de prendas usas con más frecuencia?",
+        "respuesta": "Jeans"
+      },
+      {
+        "preguntaId": 3,
+        "pregunta": "¿Qué colores predominan en tu guardarropa?",
+        "respuesta": "Neutros"
+      },
+      {
+        "preguntaId": 4,
+        "pregunta": "¿Para qué ocasiones sueles comprar ropa nueva?",
+        "respuesta": "Deporte"
+      },
+      {
+        "preguntaId": 5,
+        "pregunta": "¿Qué accesorios incluyes normalmente en tus looks?",
+        "respuesta": "Bolsos grandes"
+      },
+      {
+        "preguntaId": 6,
+        "pregunta": "¿Hay algún color o estampado que evites por completo?",
+        "respuesta": "Estampado de rayas"
+      },
+      {
+        "preguntaId": 7,
+        "pregunta": "¿Qué prenda te cuesta más combinar?",
+        "respuesta": "Zapatos"
+      },
+      {
+        "preguntaId": 8,
+        "pregunta": "Si tuvieras que elegir un ícono de moda (o influencer) que admire tu estilo, ¿quién sería?",
+        "respuesta": "Billie Eilish"
+      }
+    ]
+  },
+  {
+    "name": "Karen",
+    "email": "prueba@gmail.com",
+    "size": "L",
+    "created_at": "2025-05-04T19:35:00.280Z",
+    "respuestas": []
+  },
+  {
+    "name": "Sofia",
+    "email": "Sofia@gmail.com",
+    "size": "M",
+    "created_at": "2025-05-04T19:37:48.646Z",
+    "respuestas": []
+  }
+]
