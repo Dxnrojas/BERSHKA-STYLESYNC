@@ -18,15 +18,11 @@ switch (route.path) {
     document.getElementById("app").innerHTML = `<h1>404 - Not Found</h1>`;
 }
 
-// 🔸 Escuchar el mismo evento que app2
-socket.on("next-screen", () => {
+// Escuchar evento cuando el usuario hace clic en "Comenzar" desde app2
+socket.on("show-form-screens", () => {
   clearScripts();
   renderEsperaFormularioScreen();
 });
-
-function navigateTo(path, data) {
-  route = { path, data };
-}
 
 async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
@@ -41,4 +37,4 @@ async function makeRequest(url, method, body) {
   return await response.json();
 }
 
-export { navigateTo, socket, makeRequest };
+export { socket, makeRequest };
