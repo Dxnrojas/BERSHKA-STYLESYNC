@@ -2,19 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getAllUsers,
-  createUserInDB,
-} = require("../db/users.db");
+  createUserController,
+  getAllUsersController,
+} = require("../controllers/users.controller");
 
-router.get("/users", async (req, res) => {
-  const users = await getAllUsers();
-  res.send(users);
-});
-
-router.post("/users", async (req, res) => {
-  const { id, name } = req.body;
-  const newUser = await createUserInDB({ id, name });
-  res.send(newUser);
-});
+router.post("/register-user", createUserController);
+router.get("/users", getAllUsersController);
 
 module.exports = router;

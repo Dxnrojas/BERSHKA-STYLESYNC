@@ -7,16 +7,19 @@ function clearApp() {
   document.getElementById("app").innerHTML = "";
 }
 
+// 👉 Escucha evento para mostrar splash screen (después del QR)
 socket.on("next-screen", () => {
   clearApp();
   renderSplashScreen();
 });
 
+// 👉 Escucha evento para mostrar pantalla de formulario (después de comenzar)
 socket.on("show-form-screens", () => {
   clearApp();
   renderRegisterScreen();
 });
 
+// 👉 Función para hacer fetch a endpoints del servidor
 async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
   let response = await fetch(`${BASE_URL}${url}`, {
