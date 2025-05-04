@@ -12,7 +12,123 @@
 </head>
 
 <body>
-    <div id="app"></div>
+    <section id="pantalla-splash" class="pantalla-activa">
+        <div class="contenedor-splash">
+          <div class="contenido-izquierda">
+            <div class="logo">
+              <h1><span class="marca">BERSHKA</span><br><span class="subtitulo">STYLE SYNC</span></h1>
+              <img src="ruta-del-icono.png" alt="Icono Bershka" class="icono-logo" />
+            </div>
+            <div class="texto">
+              <h2>Construyendo el <span class="resaltado">nuevo futuro</span> de la moda...</h2>
+              <p>¿Te cuesta elegir outfits o buscar inspiración para armar uno?<br>
+              Nuestra solución combina moda y tecnología para recomendarte<br>
+              looks personalizados al instante, adaptados a tu estilo único.</p>
+            </div>
+          </div>
+      
+          <div class="contenido-derecha">
+            <div class="qr-box">
+              <h3>¡Comencemos!</h3>
+              <p><strong>Escaneá el código QR</strong></p>
+              <img src="ruta-del-qr.png" alt="Código QR" class="qr-imagen" />
+              <p class="aviso-politica">Al leer el QR confirmo que acepto la <a href="#">política de privacidad</a> y el tratamiento de mis datos personales de acuerdo con los términos establecidos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pantalla-instrucciones" >
+        <div class="contenedor-instrucciones">
+          <div class="logo-superior">
+            <img src="ruta-del-logo-blanco.png" alt="Logo Bershka Style Sync" />
+          </div>
+      
+          <div class="contenido-instrucciones">
+            <h2>Instrucciones</h2>
+            <p>
+              A continuación, aparecerán una serie de preguntas en esta pantalla. En tu celular verás
+              las <strong>opciones de respuesta</strong>, cada una identificada con los siguientes <strong>símbolos</strong>.
+            </p>
+      
+            <div class="contenedor-simbolos">
+              <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/iconos/trebol.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJpY29ub3MvdHJlYm9sLnBuZyIsImlhdCI6MTc0NjMyMzQ1MywiZXhwIjoxOTA0MDAzNDUzfQ.a_ovVdccpamH6RgP7OpVnfJmYrnzIvHpQKBMy-kBOgs" alt="Símbolo 1" />
+              <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/iconos/rectanguloredondo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJpY29ub3MvcmVjdGFuZ3Vsb3JlZG9uZG8ucG5nIiwiaWF0IjoxNzQ2MzIyNjQzLCJleHAiOjE5MDQwMDI2NDN9.MQFu4ViAVX9Ygy0cAT1yZnHP-l_6d1LxHJoeJiAj0yY" alt="Símbolo 2" />
+              <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/iconos/bolitas.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJpY29ub3MvYm9saXRhcy5wbmciLCJpYXQiOjE3NDYzMjI1NTAsImV4cCI6MTkwNDAwMjU1MH0.5wI-QOHtPicImqhNLVgmvoV70h2FX7EFnyi_4bPhjdU" alt="Símbolo 3" />
+              <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/iconos/polygon.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJpY29ub3MvcG9seWdvbi5wbmciLCJpYXQiOjE3NDYzMjI2MjcsImV4cCI6MTkwNDAwMjYyN30.xHBy9kR969K9tQqDeuRBUvP3Q2PdTW9z2fP4XAvVSdI" alt="Símbolo 4" />
+            </div>
+      
+            <p class="instruccion-final">
+              Cuando estés listo, <span class="resaltado">toca el ícono en tu celular para comenzar</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="pantalla-pregunta"  style="display: none">
+        <div class="contenedor-pregunta">
+          
+          <!-- Título de pregunta (número) -->
+          <h2 id="numero-pregunta">Pregunta #1</h2>
+      
+          <!-- Imagen principal de la pregunta -->
+          <div class="imagen-pregunta">
+            <img id="imagen-pregunta" src="ruta-imagen-pregunta.jpg" alt="Imagen relacionada a la pregunta">
+          </div>
+      
+          <!-- Texto de la pregunta -->
+          <p class="texto-pregunta" id="texto-pregunta">
+            ¿Cómo describirías tu <strong>estilo personal</strong>?
+          </p>
+      
+          <!-- Barra de progreso -->
+          <div class="barra-progreso">
+            <div id="barra-progreso-interna"></div>
+          </div>
+      
+          <!-- Opciones de respuesta -->
+          <div class="opciones-respuesta" id="contenedor-opciones">
+            <!-- Las siguientes divs serán llenadas dinámicamente con JS -->
+            <!-- Ejemplo de estructura que JS debe crear:
+            <div class="opcion">
+              <img src="icono.svg" alt="ícono">
+              <span>Deportivo - Athleisure</span>
+            </div>
+            -->
+          </div>
+      
+        </div>
+      </section>
+
+      <section id="pantalla-cargando-ia" class="pantalla-oculta">
+        <div class="contenedor-cargando">
+          
+          <!-- Ícono de carga animado -->
+          <div class="icono-carga">
+            <!-- Puedes usar un spinner con CSS o un GIF -->
+            <img src="ruta-spinner.gif" alt="Cargando" />
+          </div>
+      
+          <!-- Mensaje principal -->
+          <h2>Generando tu atuendo con IA...</h2>
+      
+          <!-- Subtítulo explicativo -->
+          <p class="texto-cargando">
+            Por favor, espera mientras creamos la mejor <strong>combinación</strong> para ti.
+          </p>
+      
+          <!-- Imagen decorativa -->
+          <div class="imagen-cargando">
+            <img src="ruta-imagen-modelo.jpg" alt="Modelo esperando atuendo generado por IA" />
+          </div>
+      
+        </div>
+      </section>
+      
+
+      
+
+      
 
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script type="module" src="app.js"></script>
