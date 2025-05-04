@@ -10,6 +10,7 @@ function clearApp() {
   document.getElementById("app").innerHTML = "";
 }
 
+// 🧭 Control de pantallas
 socket.on("next-screen", () => {
   clearApp();
   renderSplashScreen();
@@ -44,10 +45,19 @@ socket.on("juego-terminado", async () => {
   module.default();
 });
 
+// 🆕 Pantalla de selección final de outfit
+socket.on("show-outfit-selection", async () => {
+  const module = await import("./screens/outfitselection_screen.js");
+  clearApp();
+  module.default();
+});
+
+// 🐞 Debug log
 socket.onAny((event, ...args) => {
   console.log("📥 Evento recibido en app2:", event, args);
 });
 
+// 🔁 Función para peticiones HTTP
 export async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
   let response = await fetch(`${BASE_URL}${url}`, {

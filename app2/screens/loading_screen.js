@@ -26,4 +26,16 @@ export default function renderLoadingScreen() {
 
   app.innerHTML = "";
   app.appendChild(section);
+
+  // ⏱️ Después de 15 segundos, cambia a la pantalla de selección de outfit
+  setTimeout(() => {
+    import("./outfitselection_screen.js")
+      .then((module) => {
+        const data = {}; // Puedes incluir datos si se requieren
+        module.default(data);
+      })
+      .catch((err) =>
+        console.error("❌ Error al cargar outfitselection_screen.js:", err)
+      );
+  }, 15000);
 }

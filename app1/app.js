@@ -4,12 +4,15 @@ function clearScripts() {
   document.getElementById("app").innerHTML = "";
 }
 
+// 🟢 Pantalla inicial: QR
 clearScripts();
 renderQRScreen();
 
+// 🔌 Conexión Socket.IO
 import { io } from "https://cdn.socket.io/4.6.1/socket.io.esm.min.js";
 const socket = io("/", { path: "/real-time" });
 
+// 🧠 Eventos desde el backend
 socket.on("show-form-screens", async () => {
   const module = await import("./screens/esperafomulario_screen.js");
   clearScripts();
@@ -40,10 +43,19 @@ socket.on("juego-terminado", async () => {
   module.default();
 });
 
+// 🆕 Mostrar pantalla final con outfits generados por IA
+socket.on("show-outfit-selection", async () => {
+  const module = await import("./screens/OutfitSelection_big_screen.js");
+  clearScripts();
+  module.default();
+});
+
+// Debug log
 socket.onAny((event, ...args) => {
   console.log("📥 Evento recibido en app1:", event, args);
 });
 
+// 🔁 Función para peticiones HTTP
 export async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
   let response = await fetch(`${BASE_URL}${url}`, {
