@@ -4,7 +4,7 @@ import renderSplashScreen from "./screens/splash_screen.js";
 import renderRegisterScreen from "./screens/register_screen.js";
 import renderStartBtnScreen from "./screens/startbtn_screen.js";
 
-// 👉 WebSocket (con ruta personalizada)
+// 👉 WebSocket
 import { io } from "https://cdn.socket.io/4.6.1/socket.io.esm.min.js";
 const socket = io("/", { path: "/real-time" });
 
@@ -30,25 +30,40 @@ socket.on("show-instruction-screens", () => {
   renderStartBtnScreen();
 });
 
-// ✅ Evento FINAL: mostrar pantalla de selección de respuesta (juego)
-socket.on("start-game", async () => {
-  console.log("✅ Evento 'start-game' recibido en app2");
+// ✅ Evento: iniciar juego con la primera pregunta
+socket.on("start-game", async (question) => {
+  console.log("✅ Evento 'start-game' recibido en app2 con pregunta:", question);
 
   try {
     const module = await import("./screens/answerselect_screen.js");
     clearApp();
-    module.default();
+    module.default(question); // Pasamos la pregunta como argumento
   } catch (error) {
     console.error("❌ Error al cargar answerselect_screen.js:", error);
   }
 });
 
-// 🧪 OPCIONAL: Log de todos los eventos recibidos (debugging)
-/*
-socket.onAny((event, ...args) => {
-  console.log("📥 Evento recibido en app2:", event, args);
+// ✅ Evento: siguiente pregunta enviada desde el servidor
+socket.on("next-question", async (question) => {
+  try {
+    const module = await import("./screens/answerselect_screen.js");
+    clearApp();
+    module.default(question);
+  } catch (error) {
+    console.error("❌ Error al mostrar siguiente pregunta:", error);
+  }
 });
-*/
+
+// ✅ Evento: finalización del cuestionario
+socket.on("quiz-finished", () => {
+  clearApp();
+  document.getElementById("app").innerHTML = `
+    <section style="text-align: center; padding: 3rem;">
+      <h1>¡Gracias por jugar! 🎉</h1>
+      <p>Tu estilo está siendo analizado para recomendarte el mejor outfit.</p>
+    </section>
+  `;
+});
 
 // 👉 Función para hacer fetch al backend
 async function makeRequest(url, method, body) {
@@ -58,7 +73,7 @@ async function makeRequest(url, method, body) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
   });
 
   return await response.json();

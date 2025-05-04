@@ -6,7 +6,8 @@ const { createServer } = require("http");
 const usersRouter = require("./server/routes/users.router");
 const qrScreenRouter = require("./server/routes/qr_screenEvents.router");
 const splashScreenRouter = require("./server/routes/splash_screenEvents.router");
-const startGameRouter = require("./server/routes/start_game.router"); // ✅ NUEVO
+const startGameRouter = require("./server/routes/start_game.router");
+const quizRouter = require("./server/routes/quiz.router"); // ✅ NUEVO
 
 // Socket service
 const { initSocketInstance } = require("./server/services/socket.service");
@@ -26,7 +27,8 @@ app.use("/app2", express.static(path.join(__dirname, "app2")));
 app.use("/", usersRouter);
 app.use("/", qrScreenRouter);
 app.use("/", splashScreenRouter);
-app.use("/", startGameRouter); // ✅ NUEVO
+app.use("/", startGameRouter);
+app.use("/quiz", quizRouter); // ✅ NUEVO
 
 // Init WebSocket
 initSocketInstance(httpServer);
