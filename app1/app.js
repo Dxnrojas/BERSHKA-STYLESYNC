@@ -51,12 +51,12 @@ socket.on("show-outfit-selection", async () => {
 });
 
 // 🆕 Mostrar pantalla final de notificación en app1 (CORREGIDO)
-socket.on("show-email-big-screen", async () => {
-  console.log("📬 Recibido evento show-email-big-screen en app1");
+socket.on("show-email-big-screen", async (data) => {
   const module = await import("./screens/emailnotification_big.js");
   clearScripts();
-  module.default();
+  module.default(data); // 👈 Aquí se pasa el { outfitId }
 });
+
 
 // Debug log
 socket.onAny((event, ...args) => {

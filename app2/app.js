@@ -53,11 +53,12 @@ socket.on("show-outfit-selection", async () => {
 });
 
 // 🆕 Pantalla de notificación por email
-socket.on("show-email-screen", async () => {
+socket.on("show-email-screen", async (data) => {
   const module = await import("./screens/emailnotification_screen.js");
   clearApp();
-  module.default();
+  module.default(data); // ✅ ahora sí se pasa { outfitId }
 });
+
 
 // 🐞 Debug log
 socket.onAny((event, ...args) => {

@@ -35,15 +35,15 @@ const initSocketInstance = (httpServer) => {
       }
     });
 
-    // ✅ NUEVO: Usuario seleccionó un outfit
+    // ✅ Usuario seleccionó un outfit
     socket.on("outfit-selected", ({ outfitId }) => {
       console.log(`👗 Outfit seleccionado por ${socket.id}: Opción ${outfitId}`);
 
-      // Aquí podrías guardar outfitId si lo necesitas
+      // Puedes guardar aquí outfitId si lo necesitas...
 
-      // Emitimos las pantallas finales
-      io.emit("show-email-screen");       // app2
-      io.emit("show-email-big-screen");   // app1
+      // Emitimos las pantallas finales con el ID del outfit
+      io.emit("show-email-screen", { outfitId });        // 👉 App2
+      io.emit("show-email-big-screen", { outfitId });    // 👉 App1
     });
   });
 };
