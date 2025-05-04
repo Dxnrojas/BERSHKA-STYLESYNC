@@ -6,11 +6,10 @@ function clearApp() {
   document.getElementById("app").innerHTML = "";
 }
 
-// ✅ Escuchar el evento correcto emitido desde el backend
-socket.on("show-splashscreen", () => {
+// ✅ Cambiado: ahora escucha el evento correcto que emite el backend
+socket.on("next-screen", () => {
   clearApp();
   renderSplashScreen();
 });
 
-// (Opcional: exportar socket si lo necesitas en otros archivos)
 export { socket };
