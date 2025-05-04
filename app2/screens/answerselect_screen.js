@@ -1,13 +1,10 @@
 import { makeRequest } from "../app.js";
 
-let respuestasUsuario = []; // ⬅️ Arreglo global para guardar respuestas
-let juegoFinalizado = false; // ⬅️ Bandera para evitar múltiples envíos
-
 export default function renderAnswerSelectScreen(question, socket, totalPreguntas, preguntaActual) {
   const app = document.getElementById("app");
 
   const section = document.createElement("section");
-  section.id = "anserselected_screen";
+  section.id = "answerselect_screen";
   section.style.display = "block";
 
   section.innerHTML = `
@@ -20,10 +17,7 @@ export default function renderAnswerSelectScreen(question, socket, totalPregunta
         <h2 class="card-pregunta">${question.text}</h2>
       </div>
       <div class="juego-opciones" id="opciones-container">
-        <button class="opcion" id="btn-0"><img src="icono1.png" /></button>
-        <button class="opcion" id="btn-1"><img src="icono2.png" /></button>
-        <button class="opcion" id="btn-2"><img src="icono3.png" /></button>
-        <button class="opcion" id="btn-3"><img src="icono4.png" /></button>
+        ${question.options.map((_, i) => `<button class="opcion" id="btn-${i}"><img src="icono${i + 1}.png" /></button>`).join("")}
       </div>
     </div>
   `;
@@ -31,30 +25,29 @@ export default function renderAnswerSelectScreen(question, socket, totalPregunta
   app.innerHTML = "";
   app.appendChild(section);
 
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    console.error("❌ No se encontró userId en localStorage.");
+    return;
+  }
+
   const botones = document.querySelectorAll(".opcion");
 
   botones.forEach((boton, index) => {
-    boton.onclick = () => {
-      if (juegoFinalizado) return; // ⛔️ Evita que se repita
+    boton.onclick = async () => {
+      try {
+        const answer = question.options[index];
 
-      const respuesta = {
-        preguntaId: question.id,
-        pregunta: question.text,
-        respuesta: question.options[index]
-      };
+        const response = await makeRequest("/quiz/submit-answer", "POST", {
+          answer,
+          userId,
+          preguntaActual,
+        });
 
-      respuestasUsuario.push(respuesta);
-      console.log(`✅ Seleccionaste: ${respuesta.respuesta}`);
-
-      socket.emit("respuestaSeleccionada", respuesta);
-
-      if (preguntaActual < totalPreguntas) {
-        socket.emit("pedir-siguiente-pregunta", preguntaActual + 1);
-      } else {
-        juegoFinalizado = true; // ✅ Marca como terminado
-        console.log("🎉 Respuestas del usuario:");
-        console.table(respuestasUsuario);
-        socket.emit("juego-terminado"); // ✅ Sin payload (ya no lo necesitas)
+        console.log("📤 Respuesta enviada:", answer);
+        console.log("📥 Respuesta del backend:", response.message);
+      } catch (err) {
+        console.error("❌ Error al enviar respuesta:", err);
       }
     };
   });

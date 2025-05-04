@@ -40,9 +40,9 @@ export default function renderRegisterScreen() {
     try {
       const response = await makeRequest("/register-user", "POST", user);
 
-      if (response?.user || response?.message) {
+      if (response?.user) {
         alert("✅ Usuario creado con éxito");
-        // Aquí podrías navegar a otra pantalla si lo deseas
+        localStorage.setItem("userId", email);
       } else {
         alert("⚠️ Algo salió mal al guardar el usuario");
       }

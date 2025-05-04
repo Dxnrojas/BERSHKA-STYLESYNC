@@ -81,11 +81,37 @@ const questions = [
   },
 ];
 
-// ✅ Funciones sin estado compartido
+// ✅ Estado compartido: respuestas por usuario
+let respuestasUsuarios = {}; // { userId: [res1, res2, ..., res8] }
+
+// 🔸 Obtener una pregunta por su ID
 const getQuestionById = (id) => questions.find(q => q.id === id);
+
+// 🔸 Total de preguntas
 const getTotalQuestions = () => questions.length;
+
+// 🔸 Guardar una respuesta para un usuario
+const addUserResponse = (userId, respuesta) => {
+  if (!respuestasUsuarios[userId]) {
+    respuestasUsuarios[userId] = [];
+  }
+  respuestasUsuarios[userId].push(respuesta);
+};
+
+// 🔸 Obtener todas las respuestas de un usuario
+const getUserResponses = (userId) => {
+  return respuestasUsuarios[userId] || [];
+};
+
+// 🔸 Limpiar respuestas de un usuario (si reinicia)
+const clearUserResponses = (userId) => {
+  respuestasUsuarios[userId] = [];
+};
 
 module.exports = {
   getQuestionById,
   getTotalQuestions,
+  addUserResponse,
+  getUserResponses,
+  clearUserResponses,
 };

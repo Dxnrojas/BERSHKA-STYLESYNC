@@ -18,10 +18,14 @@ const createUserController = async (req, res) => {
 
   const result = await createUserInDB(user);
 
+  // ✅ Log de confirmación
+  console.log("✅ Nuevo usuario registrado:");
+  console.table([result.user]);
+
   // Emitimos evento para mostrar instrucciones
   emitEvent("show-instruction-screens");
 
-  res.send({ message: "Usuario guardado con éxito", user });
+  res.send({ message: "Usuario guardado con éxito", user: result.user });
 };
 
 // 🟢 Obtener todos los usuarios
