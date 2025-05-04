@@ -42,12 +42,18 @@ socket.on("siguiente-pregunta", async ({ question }) => {
   module.default(question); // ✅ actualiza con la nueva pregunta
 });
 
-// ✅ Evento: fin del cuestionario → pantalla de loading
+// ✅ Evento: fin del juego → carga pantalla de espera con IA (loading)
 socket.on("juego-terminado", async () => {
   const module = await import("./screens/loading_big_screen.js");
   clearScripts();
   module.default();
 });
+
+
+socket.onAny((event, ...args) => {
+  console.log("📥 Evento recibido en app:", event, args);
+});
+
 
 // 👉 Función reutilizable para peticiones al backend
 async function makeRequest(url, method, body) {

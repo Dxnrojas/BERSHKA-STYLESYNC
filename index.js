@@ -8,6 +8,7 @@ const qrScreenRouter = require("./server/routes/qr_screenEvents.router");
 const splashScreenRouter = require("./server/routes/splash_screenEvents.router");
 const startGameRouter = require("./server/routes/start_game.router");
 const quizRouter = require("./server/routes/quiz.router"); // ✅ NUEVO
+const loadingScreenRouter = require("./server/routes/loading_screen.router");
 
 // Socket service
 const { initSocketInstance } = require("./server/services/socket.service");
@@ -29,6 +30,7 @@ app.use("/", qrScreenRouter);
 app.use("/", splashScreenRouter);
 app.use("/", startGameRouter);
 app.use("/quiz", quizRouter); // ✅ NUEVO
+app.use("/", loadingScreenRouter);
 
 // Init WebSocket
 initSocketInstance(httpServer);

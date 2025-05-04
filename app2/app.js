@@ -46,12 +46,18 @@ socket.on("siguiente-pregunta", ({ question, preguntaActual }) => {
   renderAnswerSelectScreen(question, socket, totalPreguntas, preguntaActual);
 });
 
-// ✅ Evento: juego terminado → cargar pantalla loading en app2
 socket.on("juego-terminado", async () => {
   const module = await import("./screens/loading_screen.js");
   clearApp();
   module.default();
 });
+
+
+socket.onAny((event, ...args) => {
+  console.log("📥 Evento recibido en app:", event, args);
+});
+
+
 
 // 👉 Función para hacer fetch al backend (puedes usarla donde necesites)
 async function makeRequest(url, method, body) {
