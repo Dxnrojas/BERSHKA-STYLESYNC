@@ -1,4 +1,5 @@
-const { createUserInDB, getAllUsers } = require("../db/users.db");
+const { createUserInDB } = require("../db/users.db");
+const { emitEvent } = require("../services/socket.service");
 
 const createUserController = async (req, res) => {
   const { name, email, size } = req.body;
@@ -15,15 +16,13 @@ const createUserController = async (req, res) => {
   };
 
   const result = await createUserInDB(user);
-  res.send(result);
-};
 
-const getAllUsersController = async (req, res) => {
-  const users = await getAllUsers();
-  res.send(users);
+  // 👉 Emitimos evento para mostrar instrucciones en app1 y app2
+  emitEvent("show-instruction-screens");
+
+  res.send({ message: "Usuario guardado", user });
 };
 
 module.exports = {
   createUserController,
-  getAllUsersController,
 };
