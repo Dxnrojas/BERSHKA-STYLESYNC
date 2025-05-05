@@ -9,8 +9,8 @@ export default function renderSplashScreen() {
 
   splashSection.innerHTML = `
     <div class="splash-container">
-      <img src="img/logo-bershka.png" class="logo" />
-      <img src="img/personajes.png" class="personajes" />
+      <img src="img/logo-bershka.png"https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSyncDarkMode.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jRGFya01vZGUucG5nIiwiaWF0IjoxNzQ2NDEzMTAyLCJleHAiOjE3Nzc5NDkxMDJ9.RDx5YoQLVxu_N2NmQWRmp453jxCMGa471r5L18_dozY" />
+      <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/splash/splash.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJzcGxhc2gvc3BsYXNoLnBuZyIsImlhdCI6MTc0NjQxMjk5MywiZXhwIjoxOTA0MDkyOTkzfQ.rSAj5RyyQu-y0GKpdTmPpuEywHafhsSU3j4XYR2txwA" />
       <h1>¡Únete a nosotros y descubre tu estilo perfecto!</h1>
       <button id="btn-comenzar" class="btn-naranja">Comenzar</button>
     </div>
