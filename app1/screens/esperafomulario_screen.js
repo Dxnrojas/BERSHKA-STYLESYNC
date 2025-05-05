@@ -16,11 +16,11 @@ export default function renderEsperaFormularioScreen() {
         </p>
   
         <div class="imagen-momento">
-          <img src="ruta-imagen-corazon.png" alt="Ilustración corazón motivacional" />
+          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/splash/splash1.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJzcGxhc2gvc3BsYXNoMS5wbmciLCJpYXQiOjE3NDY0MTMyNzAsImV4cCI6MTc3Nzk0OTI3MH0._vfqmmL4cyBBUd9VnLVgs7LQc4WZ_-PHv4BTm1akLS8" />
         </div>
   
         <div class="logo-superior">
-          <img src="ruta-logo-blanco.png" alt="Logo Bershka Style Sync" />
+          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjQxMzMxMCwiZXhwIjoxNzc3OTQ5MzEwfQ.Cri9bAR08JOY3mfQg44pPO88wI8t8fHxZX9kSOD8MXA" />
         </div>
       </div>
     `;
