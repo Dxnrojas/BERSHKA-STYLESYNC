@@ -64,6 +64,13 @@ socket.on("show-thanks-screens", async () => {
   module.default();
 });
 
+// 🔁 Reiniciar app1 mostrando QR después del agradecimiento
+socket.on("reset-to-qr-screen", async () => {
+  const module = await import("./screens/qr_screen.js");
+  clearScripts();
+  module.default();
+});
+
 // 🐞 Debug log
 socket.onAny((event, ...args) => {
   console.log("📥 Evento recibido en app1:", event, args);

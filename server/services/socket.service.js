@@ -7,23 +7,18 @@ const initSocketInstance = (httpServer) => {
   const { Server } = require("socket.io");
   io = new Server(httpServer, {
     path: "/real-time",
-    cors: {
-      origin: "*",
-    },
+    cors: { origin: "*" },
   });
 
   io.on("connection", (socket) => {
     console.log(`🔌 Usuario conectado: ${socket.id}`);
 
-    // 🧠 Evento: Jugador responde una opción del quiz
     socket.on("respuestaSeleccionada", (respuesta) => {
       console.log(`✅ ${socket.id} respondió:`, respuesta);
     });
 
-    // 🔄 Evento: Jugador pide siguiente pregunta
     socket.on("pedir-siguiente-pregunta", (numeroPregunta) => {
       const siguientePregunta = getQuestionById(numeroPregunta);
-
       if (siguientePregunta) {
         io.emit("siguiente-pregunta", {
           question: siguientePregunta,
@@ -34,24 +29,25 @@ const initSocketInstance = (httpServer) => {
       }
     });
 
-    // 👗 Evento: Usuario selecciona un outfit
     socket.on("outfit-selected", ({ outfitId }) => {
       console.log(`👗 Outfit seleccionado por ${socket.id}: Opción ${outfitId}`);
-
-      // Emitimos pantallas de notificación del outfit
-      io.emit("show-email-screen", { outfitId });        // App2 (móvil)
-      io.emit("show-email-big-screen", { outfitId });    // App1 (pantalla grande)
+      io.emit("show-email-screen", { outfitId });     // app2
+      io.emit("show-email-big-screen", { outfitId }); // app1
     });
 
-    // 🎉 Evento: Final de la experiencia → mostrar pantallas de agradecimiento
     socket.on("gracias-participacion", () => {
-      console.log("🙏 Evento 'gracias-participacion' recibido. Mostrando pantallas de agradecimiento.");
-      io.emit("show-thanks-screens"); // Se escucha tanto en App1 como App2
+      console.log("🙏 Evento de gracias recibido. Mostrando pantallas finales.");
+
+      io.emit("show-thanks-screens");
+
+      // 🔁 Reinicio sincronizado después de 5s
+      setTimeout(() => {
+        io.emit("reset-to-qr-screen");
+      }, 5000);
     });
   });
 };
 
-// 🛰️ Permitir emitir eventos desde controladores REST
 const emitEvent = (eventName, data) => {
   if (!io) throw new Error("Socket.io instance is not initialized");
   io.emit(eventName, data);
