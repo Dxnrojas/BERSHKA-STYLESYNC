@@ -8,14 +8,14 @@ export default function renderLoadingBigScreen() {
   section.innerHTML = `
     <div class="contenedor-cargando">
       <div class="icono-carga">
-        <img src="ruta-spinner.gif" alt="Cargando" />
+        <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/cargando/cargando.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJjYXJnYW5kby9jYXJnYW5kby5wbmciLCJpYXQiOjE3NDY0MTM4NTIsImV4cCI6MTc3Nzk0OTg1Mn0.PrXjUby9RQQzduCc4MB6ITwJp5IVEFgKq9xE0FwRbFg" alt="Cargando" />
       </div>
       <h2>Generando tu atuendo con IA...</h2>
       <p class="texto-cargando">
         Por favor, espera mientras creamos la mejor <strong>combinación</strong> para ti.
       </p>
       <div class="imagen-cargando">
-        <img src="ruta-imagen-modelo.jpg" alt="Modelo esperando atuendo generado por IA" />
+        <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/cargando/cargando.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJjYXJnYW5kby9jYXJnYW5kby5wbmciLCJpYXQiOjE3NDY0MTM4NTIsImV4cCI6MTc3Nzk0OTg1Mn0.PrXjUby9RQQzduCc4MB6ITwJp5IVEFgKq9xE0FwRbFg" alt="Modelo esperando atuendo generado por IA" />
       </div>
     </div>
   `;
