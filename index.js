@@ -9,9 +9,10 @@ const splashScreenRouter = require("./server/routes/splash_screenEvents.router")
 const startGameRouter = require("./server/routes/start_game.router");
 const quizRouter = require("./server/routes/quiz.router");
 const loadingScreenRouter = require("./server/routes/loading_screen.router");
-
-// 🆕 Nuevo router para pantalla de outfit
 const outfitScreenRouter = require("./server/routes/outfit_screen.router");
+
+// 🆕 Nuevo router para pantallas de agradecimiento
+const thanksScreenRouter = require("./server/routes/thanks_screen.router");
 
 const { initSocketInstance } = require("./server/services/socket.service");
 
@@ -33,9 +34,8 @@ app.use("/", splashScreenRouter);
 app.use("/", startGameRouter);
 app.use("/quiz", quizRouter);
 app.use("/", loadingScreenRouter);
-
-// 🆕 Nueva ruta de outfit
 app.use("/", outfitScreenRouter);
+app.use("/", thanksScreenRouter); // ✅ nueva ruta para thanks_screen
 
 // Inicializar sockets
 initSocketInstance(httpServer);

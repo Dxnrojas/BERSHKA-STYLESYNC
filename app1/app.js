@@ -1,5 +1,9 @@
 import renderQRScreen from "./screens/qr_screen.js";
 
+// 🔌 Conexión Socket.IO
+import { io } from "https://cdn.socket.io/4.6.1/socket.io.esm.min.js";
+const socket = io("/", { path: "/real-time" });
+
 function clearScripts() {
   document.getElementById("app").innerHTML = "";
 }
@@ -7,10 +11,6 @@ function clearScripts() {
 // 🟢 Pantalla inicial: QR
 clearScripts();
 renderQRScreen();
-
-// 🔌 Conexión Socket.IO
-import { io } from "https://cdn.socket.io/4.6.1/socket.io.esm.min.js";
-const socket = io("/", { path: "/real-time" });
 
 // 🧠 Eventos desde el backend
 socket.on("show-form-screens", async () => {
@@ -50,15 +50,21 @@ socket.on("show-outfit-selection", async () => {
   module.default();
 });
 
-// 🆕 Mostrar pantalla final de notificación en app1 (CORREGIDO)
+// 🆕 Mostrar pantalla final de notificación en app1
 socket.on("show-email-big-screen", async (data) => {
   const module = await import("./screens/emailnotification_big.js");
   clearScripts();
-  module.default(data); // 👈 Aquí se pasa el { outfitId }
+  module.default(data);
 });
 
+// 🆕 Mostrar pantalla final de agradecimiento en app1
+socket.on("show-thanks-screens", async () => {
+  const module = await import("./screens/thanks_big_screen.js");
+  clearScripts();
+  module.default();
+});
 
-// Debug log
+// 🐞 Debug log
 socket.onAny((event, ...args) => {
   console.log("📥 Evento recibido en app1:", event, args);
 });
@@ -73,3 +79,6 @@ export async function makeRequest(url, method, body) {
   });
   return await response.json();
 }
+
+// ✅ Exportar socket para poder usarlo en otros archivos
+export { socket };

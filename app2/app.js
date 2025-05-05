@@ -56,9 +56,15 @@ socket.on("show-outfit-selection", async () => {
 socket.on("show-email-screen", async (data) => {
   const module = await import("./screens/emailnotification_screen.js");
   clearApp();
-  module.default(data); // ✅ ahora sí se pasa { outfitId }
+  module.default(data);
 });
 
+// 🆕 Pantalla de agradecimiento
+socket.on("show-thanks-screens", async () => {
+  const module = await import("./screens/thanks_screen.js");
+  clearApp();
+  module.default();
+});
 
 // 🐞 Debug log
 socket.onAny((event, ...args) => {

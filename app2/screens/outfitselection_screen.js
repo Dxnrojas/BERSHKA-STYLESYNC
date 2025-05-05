@@ -1,4 +1,4 @@
-import { socket } from "../app.js"; // Asegúrate de que esto esté disponible
+import { socket } from "../app.js"; // Asegúrate de que esté bien importado
 
 export default function renderOutfitSelectionScreen() {
   const app = document.getElementById("app");
@@ -19,12 +19,14 @@ export default function renderOutfitSelectionScreen() {
         <p class="subtitulo-instruccion">Selecciona la opción que más te guste<br />en tu celular</p>
 
         <div class="opciones-grid">
-          ${[1, 2, 3].map(
-            (i) => `
+          ${[1, 2, 3]
+            .map(
+              (i) => `
             <button class="opcion-card" data-id="${i}">
               <img src="img/icono${i}.svg" alt="Opción ${i}" class="icono-opcion" />
             </button>`
-          ).join("")}
+            )
+            .join("")}
         </div>
       </div>
     </section>
@@ -38,6 +40,10 @@ export default function renderOutfitSelectionScreen() {
 
       // 🔥 Emitir al backend
       socket.emit("outfit-selected", { outfitId: selectedOption });
+
+      // 🔁 Emitimos manualmente los eventos para mostrar las pantallas finales en ambos apps
+      socket.emit("show-email-screen", { outfitId: selectedOption }); // 👉 app2
+      socket.emit("show-email-big-screen", { outfitId: selectedOption }); // 👉 app1
     });
   });
 }
