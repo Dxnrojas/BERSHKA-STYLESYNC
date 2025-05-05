@@ -9,7 +9,7 @@ export default function renderLoadingScreen() {
     <div class="carga-container">
       <div class="juego-header">
         <img
-          src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png"
+          src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjQxNDY1MiwiZXhwIjoxNzc3OTUwNjUyfQ.YGqQQLbp5dW8w1DKh37GuxBx9_MhLH_u42AcnLAqjwA"
           alt="Logo Bershka"
           class="logo-header"
         />
