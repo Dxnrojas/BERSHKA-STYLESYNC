@@ -29,7 +29,7 @@ export default function renderQRScreen() {
       <div class="contenido-derecha" style="text-align: center; max-width: 300px;">
         <div class="qr-box">
           <h3>¡Comencemos!</h3>
-          <p><strong>Escaneá el código QR</strong></p>
+          <p><strong>Escanea el código QR</strong></p>
           <img 
             src="https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:5050/app2&size=200x200" 
             alt="Código QR" 
