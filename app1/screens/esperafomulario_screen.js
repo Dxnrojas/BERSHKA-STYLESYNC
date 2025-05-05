@@ -16,11 +16,11 @@ export default function renderEsperaFormularioScreen() {
         </p>
   
         <div class="imagen-momento">
-          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/..." />
+          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/splash/splash1.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJzcGxhc2gvc3BsYXNoMS5wbmciLCJpYXQiOjE3NDY0MjA5NTIsImV4cCI6MTc3Nzk1Njk1Mn0.gu4TFh4FeFPBDZJoYR5WqDUpcNFpEfR0ZPNcUgHKIaM" width="150px" />
         </div>
   
         <div class="logo-superior">
-          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/..." />
+          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjQxMzMxMCwiZXhwIjoxNzc3OTQ5MzEwfQ.Cri9bAR08JOY3mfQg44pPO88wI8t8fHxZX9kSOD8MXA" width="150px" />
         </div>
       </div>
     `;
