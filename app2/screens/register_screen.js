@@ -38,7 +38,8 @@ export default function renderRegisterScreen() {
     const user = { name: nombre, email, size: talla };
 
     try {
-      const response = await makeRequest("/register-user", "POST", user);
+      // 🔁 Usa la nueva ruta con prefijo /api/users
+      const response = await makeRequest("/api/users/register-user", "POST", user);
 
       if (response?.user) {
         alert("✅ Usuario creado con éxito");
@@ -47,8 +48,8 @@ export default function renderRegisterScreen() {
         alert("⚠️ Algo salió mal al guardar el usuario");
       }
     } catch (error) {
-      console.error("Error al enviar datos:", error);
-      alert("❌ Error al conectar con el servidor");
+      console.error("❌ Error al enviar datos:", error);
+      alert("❌ No se pudo conectar con el servidor");
     }
   });
 }

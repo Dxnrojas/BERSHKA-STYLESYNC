@@ -36,7 +36,6 @@ const submitAnswerController = (req, res) => {
   const respuestas = getUserResponses(userId);
   const totalPreguntas = getTotalQuestions();
 
-  // ✅ Logs para depuración
   console.log(`🧍 Usuario: ${userId}`);
   console.log(`📝 Respuesta recibida: ${answer}`);
   console.log(`📊 Total respuestas hasta ahora: ${respuestas.length}`);
@@ -48,11 +47,16 @@ const submitAnswerController = (req, res) => {
     return res.json({ message: "Quiz completado correctamente" });
   }
 
-  const siguientePregunta = getQuestionById(preguntaActual + 1);
+  const siguientePregunta = getQuestionById(Number(preguntaActual) + 1);
+
+  if (!siguientePregunta) {
+    emitEvent("juego-terminado");
+    return res.status(404).json({ error: "No hay más preguntas" });
+  }
 
   emitEvent("siguiente-pregunta", {
     question: siguientePregunta,
-    preguntaActual: preguntaActual + 1,
+    preguntaActual: Number(preguntaActual) + 1,
   });
 
   res.json({ message: "Respuesta registrada, siguiente pregunta enviada" });

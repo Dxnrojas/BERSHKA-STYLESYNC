@@ -1,5 +1,3 @@
-// ✅ app2/screens/startbtn_screen.js
-
 import { makeRequest } from "../app.js";
 
 export default function renderStartBtnScreen() {
@@ -34,16 +32,17 @@ export default function renderStartBtnScreen() {
   // 🟢 Al hacer clic en el botón, se intenta iniciar el juego
   document.getElementById("btn-iniciar-juego").addEventListener("click", async () => {
     try {
-      const response = await makeRequest("/start-game", "POST");
+      // ✅ RUTA ACTUALIZADA SEGÚN TU API
+      const response = await makeRequest("/api/start/start-game", "POST");
 
       if (response?.message) {
         console.log("✅ Juego iniciado correctamente");
-        // El servidor emitirá el evento "start-game" que ya se escucha en app.js
+        // El servidor emitirá el evento "start-game"
       } else {
         alert(response?.error || "❌ Ocurrió un error al iniciar el juego");
       }
     } catch (error) {
-      console.error("Error al iniciar el juego:", error);
+      console.error("❌ Error al iniciar el juego:", error);
       alert("❌ Error al conectar con el servidor");
     }
   });

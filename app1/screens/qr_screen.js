@@ -53,7 +53,7 @@ export default function renderQRScreen() {
 
   // Botón de prueba para activar el evento
   document.getElementById("simulate-qr-btn").addEventListener("click", async () => {
-    const response = await makeRequest("/change-screen", "POST");
+    const response = await makeRequest("/api/qr/change-screen", "POST");
     console.log("Respuesta del servidor:", response);
   });
 }

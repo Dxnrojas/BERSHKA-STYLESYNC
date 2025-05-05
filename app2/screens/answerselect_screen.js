@@ -1,6 +1,6 @@
-import { makeRequest } from "../app.js";
+import { makeRequest, socket } from "../app.js";
 
-export default function renderAnswerSelectScreen(question, socket, totalPreguntas, preguntaActual) {
+export default function renderAnswerSelectScreen(question, _, totalPreguntas, preguntaActual) {
   const app = document.getElementById("app");
 
   const section = document.createElement("section");
@@ -32,23 +32,32 @@ export default function renderAnswerSelectScreen(question, socket, totalPregunta
   }
 
   const botones = document.querySelectorAll(".opcion");
+  let hasAnswered = false;
 
   botones.forEach((boton, index) => {
-    boton.onclick = async () => {
-      try {
-        const answer = question.options[index];
+    boton.addEventListener("click", async () => {
+      if (hasAnswered) return;
+      hasAnswered = true;
 
-        const response = await makeRequest("/quiz/submit-answer", "POST", {
+      const answer = question.options[index];
+
+      try {
+        const res = await makeRequest("/api/quiz/submit-answer", "POST", {
           answer,
           userId,
           preguntaActual,
         });
 
         console.log("📤 Respuesta enviada:", answer);
-        console.log("📥 Respuesta del backend:", response.message);
+        console.log("📥 Respuesta del backend:", res.message);
+
+        // Si el servidor no está enviando la siguiente pregunta, forzamos el evento:
+        if (res.nextQuestion) {
+          socket.emit("respuesta-recibida", { preguntaActual }); // Emitir si necesario
+        }
       } catch (err) {
         console.error("❌ Error al enviar respuesta:", err);
       }
-    };
+    });
   });
 }
