@@ -10,7 +10,7 @@ export default function renderStartBtnScreen() {
   section.innerHTML = `
     <div class="instrucciones-container">
       <img 
-        src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaLogoLightMode.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthTG9nb0xpZ2h0TW9kZS5wbmciLCJpYXQiOjE3NDY0MTM2MzAsImV4cCI6MTc3Nzk0OTYzMH0.pc8Eyf-8yOFP_BY6MjXLShufklqv-HTbzgK-KKgxqCI" 
+        src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/..." 
         alt="Icono Bershka" 
         class="icono-blanco"
       />

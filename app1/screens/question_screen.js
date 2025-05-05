@@ -9,7 +9,7 @@ export default function renderQuestionScreen(question) {
     <div class="contenedor-pregunta">
       <div class="titulo">
         <h2 id="responsive-logo">Pregunta</h2>
-        <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjQxNDEyOSwiZXhwIjoxNzc3OTUwMTI5fQ.tD6de9klbfp1WnCJJ1iZ-SVX6FIqWqxFrFzfRNkV-zY" width="30px" alt="Logo" />
+        <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/..." width="30px" alt="Logo" />
       </div>
       <div class="imagen-pregunta">
         <img id="imagen-pregunta" src="ruta-imagen-pregunta.jpg" alt="Imagen relacionada a la pregunta">
