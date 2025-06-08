@@ -38,12 +38,17 @@ export default function renderRegisterScreen() {
     const user = { name: nombre, email, size: talla };
 
     try {
-      // 🔁 Usa la nueva ruta con prefijo /api/users
-      const response = await makeRequest("/api/users/register-user", "POST", user);
+      // ✅ Use the correct route
+      const response = await makeRequest("/api/users", "POST", user);
 
       if (response?.user) {
         alert("✅ Usuario creado con éxito");
-        localStorage.setItem("userId", email);
+
+        // ✅ Store real userId from Supabase for quiz steps
+        localStorage.setItem("userId", response.user.id);
+
+        // ⏭️ The socket event will now show the next screen
+        // Or manually trigger one if needed (e.g. renderStartBtnScreen())
       } else {
         alert("⚠️ Algo salió mal al guardar el usuario");
       }
