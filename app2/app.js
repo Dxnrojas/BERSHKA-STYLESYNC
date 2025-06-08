@@ -10,6 +10,7 @@ function clearApp() {
   document.getElementById("app").innerHTML = "";
 }
 
+// 🟢 Socket events to switch screens
 socket.on("next-screen", () => {
   clearApp();
   renderSplashScreen();
@@ -26,6 +27,7 @@ socket.on("show-instruction-screens", () => {
 });
 
 socket.on("start-game", (question) => {
+  const userId = localStorage.getItem("userId"); // you can use this if needed
   clearApp();
   renderAnswerSelectScreen(question, socket, 8, 1);
 });
@@ -61,6 +63,7 @@ socket.on("show-thanks-screens", async () => {
 
 socket.onAny((event, ...args) => console.log("📥 app2 recibió:", event, args));
 
+// 🔁 Generic request utility
 export async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
   const res = await fetch(`${BASE_URL}${url}`, {
