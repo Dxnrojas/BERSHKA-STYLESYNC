@@ -1,7 +1,8 @@
-import { makeRequest } from "../app.js";
+import { makeRequest, socket } from "../app.js";
 
 export default function renderRegisterScreen() {
   const app = document.getElementById("app");
+
   app.innerHTML = `
     <section id="register_screen">
       <div class="registro-container">
@@ -10,7 +11,6 @@ export default function renderRegisterScreen() {
         <form id="form-registro">
           <input type="text" id="nombre" name="nombre" placeholder="Nombre" required />
           <input type="email" id="email" name="email" placeholder="E-mail" required />
-
           <select id="talla" name="talla" required>
             <option value="">Selecciona tu talla</option>
             <option value="XS">XS</option>
@@ -21,40 +21,49 @@ export default function renderRegisterScreen() {
             <option value="XXL">XXL</option>
             <option value="XXXL">XXXL</option>
           </select>
-
           <button type="submit" id="btn-siguiente" class="btn-azul">Siguiente</button>
         </form>
       </div>
     </section>
   `;
 
-  document.getElementById("form-registro").addEventListener("submit", async (e) => {
+  const form = document.getElementById("form-registro");
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const nombre = document.getElementById("nombre").value;
-    const email = document.getElementById("email").value;
-    const talla = document.getElementById("talla").value;
+    const name = document.getElementById("nombre").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const size = document.getElementById("talla").value;
 
-    const user = { name: nombre, email, size: talla };
+    if (!name || !email || !size) {
+      alert("Por favor completa todos los campos");
+      return;
+    }
+
+    const user = { name, email, size };
 
     try {
-      // ✅ Use the correct route
       const response = await makeRequest("/api/users", "POST", user);
 
-      if (response?.user) {
-        alert("✅ Usuario creado con éxito");
-
-        // ✅ Store real userId from Supabase for quiz steps
+      if (response?.user?.id) {
+        // ✅ Guardar userId en localStorage
         localStorage.setItem("userId", response.user.id);
 
-        // ⏭️ The socket event will now show the next screen
-        // Or manually trigger one if needed (e.g. renderStartBtnScreen())
+        // ✅ Confirmación visual
+        alert("✅ Registro exitoso. ¡Comienza tu experiencia!");
+
+        // ✅ Notificar al servidor que puede avanzar
+        socket.emit("usuario-registrado", { userId: response.user.id });
+
+        // ⚠️ Si quieres avanzar de inmediato desde aquí sin esperar socket,
+        // podrías usar: renderStartBtnScreen();
       } else {
-        alert("⚠️ Algo salió mal al guardar el usuario");
+        alert("❌ Hubo un problema al guardar tu información.");
       }
-    } catch (error) {
-      console.error("❌ Error al enviar datos:", error);
-      alert("❌ No se pudo conectar con el servidor");
+    } catch (err) {
+      console.error("❌ Error de red:", err);
+      alert("⚠️ No pudimos registrarte. Intenta de nuevo.");
     }
   });
 }

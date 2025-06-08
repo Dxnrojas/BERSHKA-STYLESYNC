@@ -26,41 +26,60 @@ socket.on("show-instruction-screens", () => {
   renderStartBtnScreen();
 });
 
-socket.on("start-game", (question) => {
-  const userId = localStorage.getItem("userId"); // you can use this if needed
-  clearApp();
-  renderAnswerSelectScreen(question, socket, 8, 1);
+// ✅ FIX: Only show start-game screen for the correct user
+socket.on("start-game", ({ question, userId }) => {
+  const myId = localStorage.getItem("userId");
+  if (myId === userId) {
+    clearApp();
+    renderAnswerSelectScreen(question, socket, 8, 1); // primera pregunta
+  }
 });
 
-socket.on("siguiente-pregunta", ({ question, preguntaActual }) => {
-  clearApp();
-  renderAnswerSelectScreen(question, socket, 8, preguntaActual);
+socket.on("siguiente-pregunta", ({ question, preguntaActual, userId }) => {
+  const myId = localStorage.getItem("userId");
+  if (myId === userId) {
+    clearApp();
+    renderAnswerSelectScreen(question, socket, 8, preguntaActual);
+  }
 });
 
-socket.on("juego-terminado", async () => {
-  const module = await import("./screens/loading_screen.js");
-  clearApp();
-  module.default();
+socket.on("juego-terminado", async ({ userId }) => {
+  const myId = localStorage.getItem("userId");
+  if (myId === userId) {
+    const module = await import("./screens/loading_screen.js");
+    clearApp();
+    module.default();
+  }
 });
 
-socket.on("show-outfit-selection", async () => {
-  const module = await import("./screens/outfitselection_screen.js");
-  clearApp();
-  module.default();
+socket.on("show-outfit-selection", async ({ userId }) => {
+  const myId = localStorage.getItem("userId");
+  if (myId === userId) {
+    const module = await import("./screens/outfitselection_screen.js");
+    clearApp();
+    module.default();
+  }
 });
 
-socket.on("show-email-screen", async (data) => {
-  const module = await import("./screens/emailnotification_screen.js");
-  clearApp();
-  module.default(data);
+socket.on("show-email-screen", async ({ userId, ...data }) => {
+  const myId = localStorage.getItem("userId");
+  if (myId === userId) {
+    const module = await import("./screens/emailnotification_screen.js");
+    clearApp();
+    module.default(data);
+  }
 });
 
-socket.on("show-thanks-screens", async () => {
-  const module = await import("./screens/thanks_screen.js");
-  clearApp();
-  module.default();
+socket.on("show-thanks-screens", async ({ userId }) => {
+  const myId = localStorage.getItem("userId");
+  if (myId === userId) {
+    const module = await import("./screens/thanks_screen.js");
+    clearApp();
+    module.default();
+  }
 });
 
+// 🔍 Debug log
 socket.onAny((event, ...args) => console.log("📥 app2 recibió:", event, args));
 
 // 🔁 Generic request utility
