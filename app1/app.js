@@ -18,9 +18,11 @@ const loadScreen = async (screenName, data = null) => {
   module.default(data);
 };
 
+// 🟢 Corrección aquí: extraemos 'question' del objeto emitido
+socket.on("start-game", ({ question }) => loadScreen("question_screen", question));
+
 socket.on("show-form-screens", () => loadScreen("esperafomulario_screen"));
 socket.on("show-instruction-screens", () => loadScreen("instructions_screen"));
-socket.on("start-game", (q) => loadScreen("question_screen", q));
 socket.on("siguiente-pregunta", ({ question }) => loadScreen("question_screen", question));
 socket.on("juego-terminado", () => loadScreen("loading_big_screen"));
 socket.on("show-outfit-selection", () => loadScreen("OutfitSelection_big_screen"));
@@ -30,6 +32,7 @@ socket.on("reset-to-qr-screen", () => loadScreen("qr_screen"));
 
 socket.onAny((event, ...args) => console.log("📥 app1 recibió:", event, args));
 
+// 🧠 Utilidad para fetch
 export async function makeRequest(url, method, body) {
   const BASE_URL = "http://localhost:5050";
   const res = await fetch(`${BASE_URL}${url}`, {
