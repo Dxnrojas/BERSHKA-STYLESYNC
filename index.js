@@ -14,7 +14,8 @@ const quizRouter = require("./server/routes/quiz.router");
 const loadingScreenRouter = require("./server/routes/loading_screen.router");
 const outfitScreenRouter = require("./server/routes/outfit_screen.router");
 const thanksScreenRouter = require("./server/routes/thanks_screen.router");
-const styleRouter = require("./server/routes/style_result.router"); // ✅ NUEVA RUTA
+const styleRouter = require("./server/routes/style_result.router");
+const outfitRouter = require("./server/routes/outfit.router"); // <-- NUEVO
 
 const { initSocketInstance } = require("./server/services/socket.service");
 
@@ -29,6 +30,9 @@ app.use(express.json());
 app.use("/app1", express.static(path.join(__dirname, "app1")));
 app.use("/app2", express.static(path.join(__dirname, "app2")));
 
+// --- NUEVO: Servir archivos estáticos (collages, imágenes, etc)
+app.use("/public", express.static(path.join(__dirname, "public")));
+
 // API Routes
 app.use("/api/users", usersRouter);
 app.use("/api/qr", qrScreenRouter);
@@ -38,7 +42,8 @@ app.use("/api/quiz", quizRouter);
 app.use("/api/loading", loadingScreenRouter);
 app.use("/api/outfit", outfitScreenRouter);
 app.use("/api/thanks", thanksScreenRouter);
-app.use("/api/style", styleRouter); // ✅ AGREGADO
+app.use("/api/style", styleRouter);
+app.use("/api/outfit", outfitRouter); // <-- NUEVO
 
 // WebSocket Initialization
 initSocketInstance(httpServer);
