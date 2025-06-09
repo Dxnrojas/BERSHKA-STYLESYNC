@@ -144,7 +144,37 @@ const submitAnswerController = async (req, res) => {
   });
 };
 
+// 🧠 Nuevo: Determinar el estilo dominante del usuario
+const determineUserStyle = async (userId) => {
+  const { data: answers, error } = await supabase
+    .from("answers")
+    .select("style_tag")
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("❌ Error al obtener estilos del usuario:", error.message);
+    return null;
+  }
+
+  const styleCounts = {};
+
+  answers.forEach(({ style_tag }) => {
+    styleCounts[style_tag] = (styleCounts[style_tag] || 0) + 1;
+  });
+
+  const maxCount = Math.max(...Object.values(styleCounts));
+  const topStyles = Object.entries(styleCounts)
+    .filter(([_, count]) => count === maxCount)
+    .map(([style]) => style);
+
+  const chosenStyle =
+    topStyles[Math.floor(Math.random() * topStyles.length)];
+
+  return chosenStyle;
+};
+
 module.exports = {
   getCurrentQuestionController,
   submitAnswerController,
+  determineUserStyle, // Exported for future use
 };
