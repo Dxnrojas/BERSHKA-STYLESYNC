@@ -1,4 +1,3 @@
-// server/controllers/quiz.controller.js
 const { supabase } = require("../services/supabase.service");
 const { getQuestionById, getTotalQuestions } = require("../db/questions.db");
 const { emitEvent } = require("../services/socket.service");
@@ -119,10 +118,30 @@ const submitAnswerController = async (req, res) => {
   console.log(`📝 Respuesta: ${answer} → estilo: ${style_tag}`);
   console.log(`📊 Respuestas: ${totalRespondidas}/${totalPreguntas}`);
 
+  // ✅ Si completó el quiz, calcular estilo y guardar
   if (totalRespondidas >= totalPreguntas) {
     console.log(`🎉 Usuario ${userId} completó el quiz`);
-    emitEvent("juego-terminado", { userId });
-    return res.json({ message: "Quiz completado correctamente" });
+
+    const finalStyle = await determineUserStyle(userId);
+    console.log(`🧠 Estilo dominante calculado: ${finalStyle}`);
+
+    const { error: updateError } = await supabase
+      .from("users")
+      .update({ main_style: finalStyle })
+      .eq("id", userId);
+
+    if (updateError) {
+      console.error("⚠️ No se pudo guardar el estilo del usuario:", updateError.message);
+    } else {
+      console.log(`✅ Estilo guardado exitosamente en Supabase`);
+    }
+
+    emitEvent("juego-terminado", { userId, finalStyle });
+
+    return res.json({
+      message: "Quiz completado correctamente",
+      style: finalStyle
+    });
   }
 
   const siguientePregunta = getQuestionById(Number(preguntaActual) + 1);
@@ -176,5 +195,5 @@ const determineUserStyle = async (userId) => {
 module.exports = {
   getCurrentQuestionController,
   submitAnswerController,
-  determineUserStyle, // Exported for future use
+  determineUserStyle,
 };

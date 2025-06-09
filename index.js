@@ -14,6 +14,7 @@ const quizRouter = require("./server/routes/quiz.router");
 const loadingScreenRouter = require("./server/routes/loading_screen.router");
 const outfitScreenRouter = require("./server/routes/outfit_screen.router");
 const thanksScreenRouter = require("./server/routes/thanks_screen.router");
+const styleRouter = require("./server/routes/style_result.router"); // ✅ NUEVA RUTA
 
 const { initSocketInstance } = require("./server/services/socket.service");
 
@@ -37,6 +38,7 @@ app.use("/api/quiz", quizRouter);
 app.use("/api/loading", loadingScreenRouter);
 app.use("/api/outfit", outfitScreenRouter);
 app.use("/api/thanks", thanksScreenRouter);
+app.use("/api/style", styleRouter); // ✅ AGREGADO
 
 // WebSocket Initialization
 initSocketInstance(httpServer);
