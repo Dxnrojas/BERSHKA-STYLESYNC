@@ -1,4 +1,5 @@
 const { saveUserOutfit, supabase } = require("../services/supabase.service");
+const { emitEvent } = require("../services/socket.service"); // 👈 Necesario para emitir el evento
 
 // POST /api/user-outfits/select
 const selectOutfitController = async (req, res) => {
@@ -16,7 +17,7 @@ const selectOutfitController = async (req, res) => {
       mainStyle
     );
 
-    // Recupera el email del usuario
+    // Recupera el email del usuario (por si quieres enviar correo después)
     const { data: user, error: userError } = await supabase
       .from('users')
       .select('email, name')
@@ -27,9 +28,33 @@ const selectOutfitController = async (req, res) => {
       return res.status(404).json({ error: "No se encontró el email del usuario" });
     }
 
-    // Puedes llamar aquí la función para enviar email (lo hacemos en la siguiente fase)
+    // --- 🔥 Aquí emitimos el evento Socket.IO a ambas apps ---
+    // Para App2 (móvil):
+    emitEvent("show-email-screen", {
+      userId,
+      selectedOutfit: {
+        ...selectedOutfit,
+        collage_image_url: collageImageUrl,
+        main_style: mainStyle
+      }
+    });
+    // Para App1 (pantalla grande):
+    emitEvent("show-email-big-screen", {
+      userId,
+      selectedOutfit: {
+        ...selectedOutfit,
+        collage_image_url: collageImageUrl,
+        main_style: mainStyle
+      }
+    });
 
-    res.json({ message: "Outfit guardado correctamente", outfit: savedOutfit, user });
+    // --- Listo para email después ---
+
+    res.json({
+      message: "Outfit guardado correctamente",
+      outfit: savedOutfit,
+      user
+    });
   } catch (err) {
     console.error("❌ Error en selectOutfitController:", err);
     res.status(500).json({ error: "Error guardando outfit" });

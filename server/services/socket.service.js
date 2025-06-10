@@ -13,6 +13,7 @@ const initSocketInstance = (httpServer) => {
   io.on("connection", (socket) => {
     console.log(`🔌 Usuario conectado: ${socket.id}`);
 
+    // Eventos de quiz
     socket.on("respuestaSeleccionada", (respuesta) => {
       console.log(`✅ ${socket.id} respondió:`, respuesta);
     });
@@ -29,12 +30,7 @@ const initSocketInstance = (httpServer) => {
       }
     });
 
-    socket.on("outfit-selected", ({ outfitId }) => {
-      console.log(`👗 Outfit seleccionado por ${socket.id}: Opción ${outfitId}`);
-      io.emit("show-email-screen", { outfitId });     // app2
-      io.emit("show-email-big-screen", { outfitId }); // app1
-    });
-
+    // Evento gracias participación (fin de flujo)
     socket.on("gracias-participacion", () => {
       console.log("🙏 Evento de gracias recibido. Mostrando pantallas finales.");
 
@@ -48,6 +44,7 @@ const initSocketInstance = (httpServer) => {
   });
 };
 
+// Permite emitir eventos desde cualquier controlador/backend
 const emitEvent = (eventName, data) => {
   if (!io) throw new Error("Socket.io instance is not initialized");
   io.emit(eventName, data);

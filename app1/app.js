@@ -7,7 +7,7 @@ function clearApp() {
   document.getElementById("app").innerHTML = "";
 }
 
-// Pantalla inicial QR
+// Pantalla inicial QR (solo la primera vez)
 clearApp();
 renderQRScreen();
 
@@ -26,10 +26,12 @@ socket.on("show-instruction-screens", () => loadScreen("instructions_screen"));
 socket.on("siguiente-pregunta", ({ question }) => loadScreen("question_screen", question));
 socket.on("juego-terminado", () => loadScreen("loading_big_screen"));
 
-// 🔴 AQUÍ: Pasa los datos reales a la pantalla de outfits
+// 🔴 Pasa los datos reales (outfits, selectedOutfit, etc.) a las pantallas
 socket.on("show-outfit-selection", (data) => loadScreen("OutfitSelection_big_screen", data));
 
+// ¡AQUÍ! Recibe el objeto selectedOutfit desde el backend y pásalo completo
 socket.on("show-email-big-screen", (data) => loadScreen("emailnotification_big", data));
+
 socket.on("show-thanks-screens", () => loadScreen("thanks_big_screen"));
 socket.on("reset-to-qr-screen", () => loadScreen("qr_screen"));
 

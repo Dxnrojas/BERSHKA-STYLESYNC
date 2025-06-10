@@ -64,12 +64,14 @@ socket.on("show-outfit-selection", async (data) => {
   }
 });
 
-socket.on("show-email-screen", async ({ userId, ...data }) => {
+// ⬇️ Aquí el cambio más importante: recibe selectedOutfit y lo pasa bien
+socket.on("show-email-screen", async ({ userId, selectedOutfit }) => {
   const myId = localStorage.getItem("userId");
   if (myId === userId) {
     const module = await import("./screens/emailnotification_screen.js");
     clearApp();
-    module.default(data);
+    // ⬇️ Pasa el objeto completo como espera tu pantalla
+    module.default({ selectedOutfit });
   }
 });
 
