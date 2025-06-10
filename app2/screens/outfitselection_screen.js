@@ -1,6 +1,6 @@
 // app2/screens/outfitselection_screen.js
 
-import { socket } from "../app.js"; // Asegúrate de que esté bien importado
+import { makeRequest, socket } from "../app.js"; // Importa makeRequest también
 
 export default function renderOutfitSelectionScreen({ outfits, main_style, userId }) {
   const app = document.getElementById("app");
@@ -43,18 +43,46 @@ export default function renderOutfitSelectionScreen({ outfits, main_style, userI
 
   // Lógica de selección
   document.querySelectorAll(".opcion-card").forEach((button) => {
-    button.addEventListener("click", () => {
-      const selectedIndex = button.getAttribute("data-idx");
-      // Emitir selección al backend con el userId y el índice del outfit
-      socket.emit("outfit-selected", { userId, outfitIndex: Number(selectedIndex) });
+    button.addEventListener("click", async () => {
+      const selectedIndex = Number(button.getAttribute("data-idx"));
+      const selectedOutfit = outfits[selectedIndex];
+      const userIdLS = userId || localStorage.getItem("userId"); // fallback
+      const style = main_style || (selectedOutfit && selectedOutfit.main_style) || localStorage.getItem("main_style");
+      const collageImageUrl = selectedOutfit.collage_image_url;
 
-      // Feedback visual
-      app.innerHTML = `
-        <section class="outfit-gracias">
-          <h2 class="titulo-felicidades">¡Gracias por participar!</h2>
-          <p class="subtitulo-instruccion">Tu look favorito será enviado a tu correo pronto.<br>¡Estate pendiente!</p>
-        </section>
-      `;
+      // --- 1. Envía la selección al backend por POST (no solo socket)
+      try {
+        await makeRequest("/api/user-outfits/select", "POST", {
+          userId: userIdLS,
+          selectedOutfit,
+          collageImageUrl,
+          mainStyle: style,
+        });
+        // (Puedes mostrar un loader/email/feedback aquí)
+
+        // --- 2. (Opcional) Emitir por socket si quieres trigger en app1/app2
+        socket.emit("outfit-selected", {
+          userId: userIdLS,
+          selectedOutfit,
+          collageImageUrl,
+          mainStyle: style,
+        });
+
+        // --- 3. Feedback visual
+        app.innerHTML = `
+          <section class="outfit-gracias">
+            <h2 class="titulo-felicidades">¡Gracias por participar!</h2>
+            <p class="subtitulo-instruccion">Tu look favorito será enviado a tu correo pronto.<br>¡Estate pendiente!</p>
+          </section>
+        `;
+      } catch (err) {
+        app.innerHTML = `
+          <section class="outfit-error">
+            <h2>Error</h2>
+            <p>No pudimos guardar tu selección. Intenta de nuevo.</p>
+          </section>
+        `;
+      }
     });
   });
 }

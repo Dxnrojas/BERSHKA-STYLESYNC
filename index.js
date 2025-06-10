@@ -16,6 +16,9 @@ const outfitScreenRouter = require("./server/routes/outfit_screen.router");
 const thanksScreenRouter = require("./server/routes/thanks_screen.router");
 const styleResultRouter = require("./server/routes/style_result.router");
 
+// 👇 NUEVO: ruta para guardar outfits seleccionados
+const userOutfitRouter = require("./server/routes/user_outfit.router");
+
 const { initSocketInstance } = require("./server/services/socket.service");
 
 const app = express();
@@ -42,6 +45,8 @@ app.use("/api/loading", loadingScreenRouter);
 app.use("/api/outfit", outfitScreenRouter);
 app.use("/api/thanks", thanksScreenRouter);
 app.use("/api/style-result", styleResultRouter);
+// 👇 Agrega la nueva ruta aquí
+app.use("/api/user-outfits", userOutfitRouter);
 
 // Default Route (opcional, útil para debug)
 app.get("/", (req, res) => {

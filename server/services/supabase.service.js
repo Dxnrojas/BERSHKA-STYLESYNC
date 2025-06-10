@@ -65,8 +65,36 @@ async function uploadBase64ToSupabase(base64, filename, folder = '') {
   return publicUrlData.publicUrl;
 }
 
+/**
+ * Guarda el outfit seleccionado por el usuario en la tabla user_outfits.
+ * @param {string} userId - UUID del usuario.
+ * @param {object} selectedOutfit - Objeto JSON del outfit seleccionado.
+ * @param {string} collageImageUrl - URL del collage generado por IA.
+ * @param {string} mainStyle - Estilo dominante del usuario.
+ * @returns {Promise<object>} - Registro insertado.
+ */
+async function saveUserOutfit(userId, selectedOutfit, collageImageUrl, mainStyle) {
+  const { data, error } = await supabase
+    .from('user_outfits')
+    .insert([{
+      user_id: userId,
+      selected_outfit: selectedOutfit,
+      collage_image_url: collageImageUrl,
+      main_style: mainStyle,
+    }])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('❌ Error guardando user_outfit:', error);
+    throw error;
+  }
+  return data;
+}
+
 module.exports = {
   supabase,
   getProductsByStyle,
   uploadBase64ToSupabase,
+  saveUserOutfit, // <-- ¡Nuevo export!
 };
