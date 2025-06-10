@@ -1,12 +1,10 @@
-const { supabase } = require("../services/supabase.service");
+const { supabase, getProductsByStyle } = require("../services/supabase.service");
+const { generateOutfitsWithPrompt } = require("../services/openai.service");
 
-// 🔍 Determinar estilo dominante por frecuencia + desempate
+// 1. Determina el main_style y lo guarda
 const determineUserStyle = async (req, res) => {
   const { userId } = req.body;
-
-  if (!userId) {
-    return res.status(400).json({ error: "Falta userId" });
-  }
+  if (!userId) return res.status(400).json({ error: "Falta userId" });
 
   const { data: answers, error } = await supabase
     .from("answers")
@@ -40,6 +38,7 @@ const determineUserStyle = async (req, res) => {
 
   if (updateError) {
     console.error("⚠️ No se pudo guardar el estilo en users:", updateError.message);
+    // No cortamos aquí, el estilo igual puede devolverse
   }
 
   res.json({
@@ -48,4 +47,46 @@ const determineUserStyle = async (req, res) => {
   });
 };
 
-module.exports = { determineUserStyle };
+// 2. Genera los outfits con OpenAI y productos de Supabase
+const generateUserOutfits = async (req, res) => {
+  const { userId } = req.body;
+  if (!userId) return res.status(400).json({ error: "Falta userId" });
+
+  // Leer el main_style del usuario
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .select("main_style")
+    .eq("id", userId)
+    .single();
+
+  if (userError || !user || !user.main_style) {
+    return res.status(400).json({ error: "No se encontró el main_style para el usuario" });
+  }
+  const mainStyle = user.main_style;
+
+  // Traer productos filtrados por estilo
+  let products;
+  try {
+    products = await getProductsByStyle(mainStyle);
+    if (!products || products.length < 4) {
+      return res.status(400).json({ error: "No hay suficientes productos para generar outfits." });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: "Error consultando productos", details: e.message });
+  }
+
+  // Generar los outfits (solo JSON, collage más adelante)
+  let outfits;
+  try {
+    outfits = await generateOutfitsWithPrompt(mainStyle, products);
+  } catch (e) {
+    return res.status(500).json({ error: "Error generando outfits con AI", details: e.message });
+  }
+
+  res.json({ main_style: mainStyle, outfits });
+};
+
+module.exports = {
+  determineUserStyle,
+  generateUserOutfits,
+};

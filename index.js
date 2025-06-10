@@ -14,7 +14,7 @@ const quizRouter = require("./server/routes/quiz.router");
 const loadingScreenRouter = require("./server/routes/loading_screen.router");
 const outfitScreenRouter = require("./server/routes/outfit_screen.router");
 const thanksScreenRouter = require("./server/routes/thanks_screen.router");
-const styleRouter = require("./server/routes/style_result.router"); // ✅ NUEVA RUTA
+const styleResultRouter = require("./server/routes/style_result.router"); // ✅ NOMBRE MÁS CLARO
 
 const { initSocketInstance } = require("./server/services/socket.service");
 
@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 5050;
 // Middleware
 app.use(express.json());
 
-// Static Frontend
+// Static Frontend (App1 = pantalla pública, App2 = móvil)
 app.use("/app1", express.static(path.join(__dirname, "app1")));
 app.use("/app2", express.static(path.join(__dirname, "app2")));
 
@@ -38,9 +38,19 @@ app.use("/api/quiz", quizRouter);
 app.use("/api/loading", loadingScreenRouter);
 app.use("/api/outfit", outfitScreenRouter);
 app.use("/api/thanks", thanksScreenRouter);
-app.use("/api/style", styleRouter); // ✅ AGREGADO
+app.use("/api/style-result", styleResultRouter); // ✅ NOMBRE DE RUTA RECOMENDADO
 
-// WebSocket Initialization
+// Default Route (opcional, útil para debug)
+app.get("/", (req, res) => {
+  res.send("Bershka StyleSync backend running 🚀");
+});
+
+// 404 Handler (opcional, para API)
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// WebSocket Initialization (Socket.IO)
 initSocketInstance(httpServer);
 
 // Server Start

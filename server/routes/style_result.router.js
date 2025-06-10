@@ -1,9 +1,11 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const {
+  determineUserStyle,
+  generateUserOutfits,
+} = require('../controllers/style_result.controller');
 
-const { determineUserStyle } = require("../controllers/style_result.controller");
-
-// POST /api/style/result
-router.post("/result", determineUserStyle);
+router.post('/determine-style', determineUserStyle); // POST con { userId }
+router.post('/generate-outfits', generateUserOutfits); // POST con { userId }
 
 module.exports = router;
