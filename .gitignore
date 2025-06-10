@@ -1,3 +1,2 @@
 node_modules
-.envgit add .gitignore
-git commit -am "Remove .env with API key from repo and add to .gitignore"
+.env
