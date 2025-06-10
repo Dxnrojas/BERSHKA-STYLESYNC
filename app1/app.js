@@ -25,7 +25,10 @@ socket.on("show-form-screens", () => loadScreen("esperafomulario_screen"));
 socket.on("show-instruction-screens", () => loadScreen("instructions_screen"));
 socket.on("siguiente-pregunta", ({ question }) => loadScreen("question_screen", question));
 socket.on("juego-terminado", () => loadScreen("loading_big_screen"));
-socket.on("show-outfit-selection", () => loadScreen("OutfitSelection_big_screen"));
+
+// 🔴 AQUÍ: Pasa los datos reales a la pantalla de outfits
+socket.on("show-outfit-selection", (data) => loadScreen("OutfitSelection_big_screen", data));
+
 socket.on("show-email-big-screen", (data) => loadScreen("emailnotification_big", data));
 socket.on("show-thanks-screens", () => loadScreen("thanks_big_screen"));
 socket.on("reset-to-qr-screen", () => loadScreen("qr_screen"));

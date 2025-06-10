@@ -1,3 +1,5 @@
+// app1/screens/loading_big_screen.js
+
 export default function renderLoadingBigScreen() {
   const app = document.getElementById("app");
 
@@ -23,15 +25,5 @@ export default function renderLoadingBigScreen() {
   app.innerHTML = "";
   app.appendChild(section);
 
-  // ⏱️ Después de 15 segundos, cambia a la pantalla de selección de outfit
-  setTimeout(() => {
-    import("./OutfitSelection_big_screen.js")
-      .then((module) => {
-        const data = {}; // Puedes pasar datos si los necesitas
-        module.default(data);
-      })
-      .catch((err) =>
-        console.error("❌ Error al cargar OutfitSelection_big_screen.js:", err)
-      );
-  }, 15000);
+  // ❌ NO pongas setTimeout ni importes la siguiente pantalla aquí
 }

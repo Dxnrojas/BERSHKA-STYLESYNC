@@ -1,34 +1,15 @@
 const { supabase, getProductsByStyle, uploadBase64ToSupabase } = require("../services/supabase.service");
 const { generateOutfitsWithPrompt, generateOutfitCollage } = require("../services/openai.service");
 
-// 1. Determina el main_style y lo guarda
+// 1. Determina el main_style y lo guarda (puedes dejarlo para pruebas HTTP)
 const determineUserStyle = async (req, res) => {
   const { userId } = req.body;
   if (!userId) return res.status(400).json({ error: "Falta userId" });
 
-  const { data: answers, error } = await supabase
-    .from("answers")
-    .select("style_tag")
-    .eq("user_id", userId);
-
-  if (error || !answers || answers.length === 0) {
-    console.error("❌ Error al obtener respuestas:", error?.message);
+  const chosenStyle = await _determineUserStyle(userId);
+  if (!chosenStyle) {
     return res.status(500).json({ error: "No se pudo determinar el estilo" });
   }
-
-  const styleCounts = {};
-  answers.forEach(({ style_tag }) => {
-    styleCounts[style_tag] = (styleCounts[style_tag] || 0) + 1;
-  });
-
-  const maxCount = Math.max(...Object.values(styleCounts));
-  const topStyles = Object.entries(styleCounts)
-    .filter(([_, count]) => count === maxCount)
-    .map(([style]) => style);
-
-  // 🎲 Desempate aleatorio entre los más frecuentes
-  const chosenStyle =
-    topStyles[Math.floor(Math.random() * topStyles.length)];
 
   // 💾 Guardar estilo en la tabla users
   const { error: updateError } = await supabase
@@ -47,11 +28,37 @@ const determineUserStyle = async (req, res) => {
   });
 };
 
-// 2. Genera los outfits con OpenAI y productos de Supabase
-const generateUserOutfits = async (req, res) => {
-  const { userId } = req.body;
-  if (!userId) return res.status(400).json({ error: "Falta userId" });
+// Nueva función interna para calcular estilo dominante SIN res
+async function _determineUserStyle(userId) {
+  const { data: answers, error } = await supabase
+    .from("answers")
+    .select("style_tag")
+    .eq("user_id", userId);
 
+  if (error || !answers || answers.length === 0) {
+    console.error("❌ Error al obtener respuestas:", error?.message);
+    return null;
+  }
+
+  const styleCounts = {};
+  answers.forEach(({ style_tag }) => {
+    styleCounts[style_tag] = (styleCounts[style_tag] || 0) + 1;
+  });
+
+  const maxCount = Math.max(...Object.values(styleCounts));
+  const topStyles = Object.entries(styleCounts)
+    .filter(([_, count]) => count === maxCount)
+    .map(([style]) => style);
+
+  // 🎲 Desempate aleatorio entre los más frecuentes
+  const chosenStyle =
+    topStyles[Math.floor(Math.random() * topStyles.length)];
+
+  return chosenStyle;
+}
+
+// 2. Función REUTILIZABLE que puedes usar tanto como endpoint como internamente
+async function generateUserOutfitsWithCollages(userId) {
   // Leer el main_style del usuario
   const { data: user, error: userError } = await supabase
     .from("users")
@@ -60,28 +67,20 @@ const generateUserOutfits = async (req, res) => {
     .single();
 
   if (userError || !user || !user.main_style) {
-    return res.status(400).json({ error: "No se encontró el main_style para el usuario" });
+    throw new Error("No se encontró el main_style para el usuario");
   }
   const mainStyle = user.main_style;
 
   // Traer productos filtrados por estilo
   let products;
-  try {
-    products = await getProductsByStyle(mainStyle);
-    if (!products || products.length < 4) {
-      return res.status(400).json({ error: "No hay suficientes productos para generar outfits." });
-    }
-  } catch (e) {
-    return res.status(500).json({ error: "Error consultando productos", details: e.message });
+  products = await getProductsByStyle(mainStyle);
+  if (!products || products.length < 4) {
+    throw new Error("No hay suficientes productos para generar outfits.");
   }
 
   // Generar los outfits en JSON
   let outfits;
-  try {
-    outfits = await generateOutfitsWithPrompt(mainStyle, products);
-  } catch (e) {
-    return res.status(500).json({ error: "Error generando outfits con AI", details: e.message });
-  }
+  outfits = await generateOutfitsWithPrompt(mainStyle, products);
 
   // Por cada outfit: genera collage y sube a Storage
   for (let i = 0; i < outfits.length; i++) {
@@ -101,10 +100,24 @@ const generateUserOutfits = async (req, res) => {
     }
   }
 
-  res.json({ main_style: mainStyle, outfits });
+  return { main_style: mainStyle, outfits };
+}
+
+// 3. Endpoint HTTP (opcional) usando la función anterior
+const generateUserOutfits = async (req, res) => {
+  const { userId } = req.body;
+  if (!userId) return res.status(400).json({ error: "Falta userId" });
+
+  try {
+    const result = await generateUserOutfitsWithCollages(userId);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: "Error generando outfits", details: e.message });
+  }
 };
 
 module.exports = {
   determineUserStyle,
   generateUserOutfits,
+  generateUserOutfitsWithCollages, // <-- ¡Esto es lo que llamas desde quiz.controller.js!
 };

@@ -1,9 +1,10 @@
 const { supabase } = require("../services/supabase.service");
 const { getQuestionById, getTotalQuestions } = require("../db/questions.db");
 const { emitEvent } = require("../services/socket.service");
+const { generateUserOutfitsWithCollages } = require("./style_result.controller");
 
 // 🔗 Mapear respuestas a estilos
-const getStyleTag = (questionId, answer) => {
+function getStyleTag(questionId, answer) {
   const styleMap = {
     1: {
       "Deportivo - Athleisure": "Deportivo",
@@ -54,26 +55,49 @@ const getStyleTag = (questionId, answer) => {
       "Harry Styles": "Minimalista",
     }
   };
-
   return styleMap[questionId]?.[answer] || "Desconocido";
-};
+}
 
 // 🟢 Devuelve una pregunta específica por ID
-const getCurrentQuestionController = (req, res) => {
+function getCurrentQuestionController(req, res) {
   const { id } = req.query;
-
   if (!id) {
     return res.status(400).json({ error: "Falta el ID de la pregunta" });
   }
-
   const question = getQuestionById(Number(id));
-
   if (!question) {
     return res.status(404).json({ error: "Pregunta no encontrada" });
   }
-
   res.json(question);
-};
+}
+
+// 🧠 Determinar el estilo dominante del usuario
+async function determineUserStyle(userId) {
+  const { data: answers, error } = await supabase
+    .from("answers")
+    .select("style_tag")
+    .eq("user_id", userId);
+
+  if (error) {
+    console.error("❌ Error al obtener estilos del usuario:", error.message);
+    return null;
+  }
+
+  const styleCounts = {};
+  answers.forEach(({ style_tag }) => {
+    styleCounts[style_tag] = (styleCounts[style_tag] || 0) + 1;
+  });
+
+  const maxCount = Math.max(...Object.values(styleCounts));
+  const topStyles = Object.entries(styleCounts)
+    .filter(([_, count]) => count === maxCount)
+    .map(([style]) => style);
+
+  const chosenStyle =
+    topStyles[Math.floor(Math.random() * topStyles.length)];
+
+  return chosenStyle;
+}
 
 // 🟢 Recibe y guarda la respuesta en Supabase
 const submitAnswerController = async (req, res) => {
@@ -114,11 +138,7 @@ const submitAnswerController = async (req, res) => {
   const totalRespondidas = respuestas.length;
   const totalPreguntas = getTotalQuestions();
 
-  console.log(`🧍 Usuario: ${userId}`);
-  console.log(`📝 Respuesta: ${answer} → estilo: ${style_tag}`);
-  console.log(`📊 Respuestas: ${totalRespondidas}/${totalPreguntas}`);
-
-  // ✅ Si completó el quiz, calcular estilo y guardar
+  // ✅ Si completó el quiz, calcular estilo, guardar, generar outfits y emitir evento
   if (totalRespondidas >= totalPreguntas) {
     console.log(`🎉 Usuario ${userId} completó el quiz`);
 
@@ -136,14 +156,25 @@ const submitAnswerController = async (req, res) => {
       console.log(`✅ Estilo guardado exitosamente en Supabase`);
     }
 
-    emitEvent("juego-terminado", { userId, finalStyle });
+    // 👇 NUEVO: Genera outfits + collages y emite evento
+    try {
+      const { outfits, main_style } = await generateUserOutfitsWithCollages(userId);
 
-    return res.json({
-      message: "Quiz completado correctamente",
-      style: finalStyle
-    });
+      emitEvent("show-outfit-selection", { outfits, main_style, userId });
+
+      return res.json({
+        message: "Quiz completado y outfits generados",
+        style: finalStyle,
+        outfits,
+        main_style,
+      });
+    } catch (err) {
+      console.error("❌ Error generando outfits tras completar quiz:", err);
+      return res.status(500).json({ error: "Error generando outfits", details: err.message });
+    }
   }
 
+  // Si no es la última pregunta, enviar la siguiente
   const siguientePregunta = getQuestionById(Number(preguntaActual) + 1);
 
   if (!siguientePregunta) {
@@ -161,35 +192,6 @@ const submitAnswerController = async (req, res) => {
     message: "Respuesta guardada, siguiente pregunta enviada",
     nextQuestion: siguientePregunta,
   });
-};
-
-// 🧠 Nuevo: Determinar el estilo dominante del usuario
-const determineUserStyle = async (userId) => {
-  const { data: answers, error } = await supabase
-    .from("answers")
-    .select("style_tag")
-    .eq("user_id", userId);
-
-  if (error) {
-    console.error("❌ Error al obtener estilos del usuario:", error.message);
-    return null;
-  }
-
-  const styleCounts = {};
-
-  answers.forEach(({ style_tag }) => {
-    styleCounts[style_tag] = (styleCounts[style_tag] || 0) + 1;
-  });
-
-  const maxCount = Math.max(...Object.values(styleCounts));
-  const topStyles = Object.entries(styleCounts)
-    .filter(([_, count]) => count === maxCount)
-    .map(([style]) => style);
-
-  const chosenStyle =
-    topStyles[Math.floor(Math.random() * topStyles.length)];
-
-  return chosenStyle;
 };
 
 module.exports = {

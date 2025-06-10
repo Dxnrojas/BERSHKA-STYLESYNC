@@ -46,18 +46,21 @@ socket.on("siguiente-pregunta", ({ question, preguntaActual, userId }) => {
 socket.on("juego-terminado", async ({ userId }) => {
   const myId = localStorage.getItem("userId");
   if (myId === userId) {
+    // Solo muestra loading, NO setTimeout ni cambio manual
     const module = await import("./screens/loading_screen.js");
     clearApp();
     module.default();
   }
 });
 
-socket.on("show-outfit-selection", async ({ userId }) => {
+// Recibe outfits y main_style y pásalos a la pantalla
+socket.on("show-outfit-selection", async (data) => {
   const myId = localStorage.getItem("userId");
-  if (myId === userId) {
+  // data: { outfits, main_style, userId }
+  if (myId === data.userId) {
     const module = await import("./screens/outfitselection_screen.js");
     clearApp();
-    module.default();
+    module.default({ ...data, userId: myId }); // asegúrate de pasar el userId correcto
   }
 });
 

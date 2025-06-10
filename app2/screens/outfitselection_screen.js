@@ -1,6 +1,8 @@
+// app2/screens/outfitselection_screen.js
+
 import { socket } from "../app.js"; // Asegúrate de que esté bien importado
 
-export default function renderOutfitSelectionScreen() {
+export default function renderOutfitSelectionScreen({ outfits, main_style, userId }) {
   const app = document.getElementById("app");
 
   app.innerHTML = `
@@ -9,24 +11,31 @@ export default function renderOutfitSelectionScreen() {
         <!-- Header -->
         <div class="juego-header">
           <img
-            src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/..."
+            src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png"
             alt="Logo Bershka"
             class="logo-header"
           />
         </div>
 
         <h2 class="titulo-felicidades">¡Felicidades fashionista!</h2>
-        <p class="subtitulo-instruccion">Selecciona la opción que más te guste<br />en tu celular</p>
+        <p class="subtitulo-instruccion">
+          Selecciona el outfit que más te guste<br />y recíbelo en tu correo
+        </p>
 
         <div class="opciones-grid">
-          ${[1, 2, 3]
-            .map(
-              (i) => `
-            <button class="opcion-card" data-id="${i}">
-              <img src="img/icono${i}.svg" alt="Opción ${i}" class="icono-opcion" />
-            </button>`
-            )
-            .join("")}
+          ${outfits.map((outfit, idx) => `
+            <button class="opcion-card" data-idx="${idx}">
+              <img src="${outfit.collage_image_url}" alt="Outfit ${idx + 1}" class="imagen-outfit" />
+              <ul class="outfit-items">
+                ${outfit.items.map(item => `
+                  <li>
+                    <a href="${item.purchase_url}" target="_blank">${item.name}</a>
+                  </li>
+                `).join("")}
+              </ul>
+              <span class="outfit-label">Opción ${idx + 1}</span>
+            </button>
+          `).join("")}
         </div>
       </div>
     </section>
@@ -35,15 +44,17 @@ export default function renderOutfitSelectionScreen() {
   // Lógica de selección
   document.querySelectorAll(".opcion-card").forEach((button) => {
     button.addEventListener("click", () => {
-      const selectedOption = button.getAttribute("data-id");
-      console.log("✅ Opción seleccionada:", selectedOption);
+      const selectedIndex = button.getAttribute("data-idx");
+      // Emitir selección al backend con el userId y el índice del outfit
+      socket.emit("outfit-selected", { userId, outfitIndex: Number(selectedIndex) });
 
-      // 🔥 Emitir al backend
-      socket.emit("outfit-selected", { outfitId: selectedOption });
-
-      // 🔁 Emitimos manualmente los eventos para mostrar las pantallas finales en ambos apps
-      socket.emit("show-email-screen", { outfitId: selectedOption }); // 👉 app2
-      socket.emit("show-email-big-screen", { outfitId: selectedOption }); // 👉 app1
+      // Feedback visual
+      app.innerHTML = `
+        <section class="outfit-gracias">
+          <h2 class="titulo-felicidades">¡Gracias por participar!</h2>
+          <p class="subtitulo-instruccion">Tu look favorito será enviado a tu correo pronto.<br>¡Estate pendiente!</p>
+        </section>
+      `;
     });
   });
 }
