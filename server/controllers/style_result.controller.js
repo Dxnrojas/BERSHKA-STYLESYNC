@@ -1,5 +1,5 @@
-const { supabase, getProductsByStyle } = require("../services/supabase.service");
-const { generateOutfitsWithPrompt } = require("../services/openai.service");
+const { supabase, getProductsByStyle, uploadBase64ToSupabase } = require("../services/supabase.service");
+const { generateOutfitsWithPrompt, generateOutfitCollage } = require("../services/openai.service");
 
 // 1. Determina el main_style y lo guarda
 const determineUserStyle = async (req, res) => {
@@ -75,12 +75,30 @@ const generateUserOutfits = async (req, res) => {
     return res.status(500).json({ error: "Error consultando productos", details: e.message });
   }
 
-  // Generar los outfits (solo JSON, collage más adelante)
+  // Generar los outfits en JSON
   let outfits;
   try {
     outfits = await generateOutfitsWithPrompt(mainStyle, products);
   } catch (e) {
     return res.status(500).json({ error: "Error generando outfits con AI", details: e.message });
+  }
+
+  // Por cada outfit: genera collage y sube a Storage
+  for (let i = 0; i < outfits.length; i++) {
+    try {
+      const base64 = await generateOutfitCollage(outfits[i].items);
+      if (base64) {
+        // Filename único: userId_outfit1.png, etc.
+        const filename = `${userId}_outfit${i + 1}.png`;
+        const publicUrl = await uploadBase64ToSupabase(base64, filename, '');
+        outfits[i].collage_image_url = publicUrl;
+      } else {
+        outfits[i].collage_image_url = "";
+      }
+    } catch (err) {
+      console.error(`Error generando o subiendo collage del outfit ${i + 1}:`, err.message);
+      outfits[i].collage_image_url = "";
+    }
   }
 
   res.json({ main_style: mainStyle, outfits });

@@ -18,11 +18,9 @@ function superRobustJsonArrayParse(content) {
     try {
       return JSON.parse(cleaned);
     } catch (e) {
-      // Si aún así falla, tira el error más claro posible
       throw new Error('OpenAI JSON parse failed: ' + e.message + ' | Output: ' + cleaned.slice(0, 300));
     }
   } else {
-    // Si no hay ningún array en el texto, error
     throw new Error('OpenAI JSON parse failed: No array found in output | Output: ' + content.slice(0, 300));
   }
 }
@@ -53,11 +51,56 @@ IMPORTANT: Do NOT use markdown, code blocks, or explanations. Output ONLY a pure
     messages: [{ role: "user", content: prompt }],
   });
 
-  // Debug opcional (puedes comentar la línea después de probar)
-  // console.log("Respuesta raw de OpenAI:", res.choices[0].message.content);
-
   // Usa el parser ultra robusto aquí:
   return superRobustJsonArrayParse(res.choices[0].message.content);
 }
 
-module.exports = { generateOutfitsWithPrompt };
+/**
+ * Llama a OpenAI para generar una imagen collage de un outfit usando los image_url de Supabase como referencia.
+ * @param {Array} outfitItems - Array de items (cada uno con image_url y name)
+ * @returns {String|null} Imagen generada en base64, o null si falla.
+ */
+async function generateOutfitCollage(outfitItems) {
+  // Prepara imágenes de referencia (public URLs de Supabase)
+  const inputImages = outfitItems.map((item) => ({
+    type: "input_image",
+    image_url: item.image_url,
+  }));
+
+  // Arma descripción para el prompt visual
+  const description = outfitItems.map((item) => item.name).join(", ");
+  const prompt = `Create a clean and stylish fashion collage of the following Bershka items: ${description}. Use a white or transparent background, PNG format, and display all items clearly as if arranged for a lookbook.`;
+
+  const response = await openai.responses.create({
+    model: "gpt-4o",
+    input: [
+      {
+        role: "user",
+        content: [
+          { type: "input_text", text: prompt },
+          ...inputImages,
+        ],
+      },
+    ],
+    tools: [
+      {
+        type: "image_generation",
+        background: "transparent",
+        quality: "high",
+      },
+    ],
+  });
+
+  // Extrae la imagen generada (en base64)
+  const imageData = response.output
+    .filter((output) => output.type === "image_generation_call")
+    .map((output) => output.result);
+
+  // Retorna el primer resultado (base64)
+  return imageData.length > 0 ? imageData[0] : null;
+}
+
+module.exports = {
+  generateOutfitsWithPrompt,
+  generateOutfitCollage,
+};

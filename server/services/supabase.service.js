@@ -31,8 +31,42 @@ async function getProductsByStyle(mainStyle) {
   return data;
 }
 
+/**
+ * Sube una imagen base64 a Supabase Storage en el bucket 'collages' y retorna la URL pública.
+ * @param {string} base64 - La imagen en base64
+ * @param {string} filename - Nombre de archivo (ejemplo: user123_outfit1.png)
+ * @param {string} [folder='collages'] - Carpeta dentro del bucket collages (opcional)
+ * @returns {Promise<string>} URL pública de la imagen subida
+ */
+async function uploadBase64ToSupabase(base64, filename, folder = '') {
+  // Decodifica el base64
+  const buffer = Buffer.from(base64, 'base64');
+  // Construye el path: si quieres subcarpetas puedes agregarlas en folder
+  const filePath = folder ? `${folder}/${filename}` : filename;
+
+  // Sube la imagen al bucket 'collages'
+  const { data, error } = await supabase.storage
+    .from('collages')
+    .upload(filePath, buffer, {
+      contentType: 'image/png',
+      upsert: true, // Sobre-escribe si ya existe
+    });
+
+  if (error) {
+    console.error('❌ Error uploading image to Supabase Storage:', error.message);
+    throw new Error('Error uploading image to Supabase Storage: ' + error.message);
+  }
+
+  // Obtén la URL pública
+  const { data: publicUrlData } = supabase.storage
+    .from('collages')
+    .getPublicUrl(filePath);
+
+  return publicUrlData.publicUrl;
+}
+
 module.exports = {
   supabase,
   getProductsByStyle,
-  // Puedes agregar aquí más funciones reutilizables: getUserById, saveOutfit, etc.
+  uploadBase64ToSupabase,
 };
