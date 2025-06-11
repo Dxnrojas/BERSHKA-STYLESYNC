@@ -11,6 +11,12 @@ const questions = [
       "Elegante - Original",
       "Minimalista - Bohemio"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 2,
@@ -21,6 +27,12 @@ const questions = [
       "Sudaderas (pantalón)",
       "Blazers"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 3,
@@ -31,6 +43,12 @@ const questions = [
       "Pasteles",
       "Oscuros"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 4,
@@ -41,6 +59,12 @@ const questions = [
       "Trabajo",
       "Universidad"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 5,
@@ -51,6 +75,12 @@ const questions = [
       "Joyería fina",
       "No uso casi accesorios"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 6,
@@ -61,6 +91,12 @@ const questions = [
       "Colores neón",
       "No uso casi estampados"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 7,
@@ -71,6 +107,12 @@ const questions = [
       "Chaquetas",
       "Blazers"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
   {
     id: 8,
@@ -81,6 +123,12 @@ const questions = [
       "David Beckham",
       "Harry Styles"
     ],
+    iconUrls: [
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//trebol.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//polygon.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//bolitas.png",
+      "https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/iconos//rectanguloredondo.png"
+    ]
   },
 ];
 

@@ -1,4 +1,62 @@
 export default function renderEsperaFormularioScreen() {
+
+  const style = document.createElement("style");
+style.textContent = `body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #1b1b1b;
+  color: white;
+}
+
+#esperafomulario_screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contenedor-momento {
+  text-align: center;
+  padding: 10rem 20px;
+  position: relative;
+}
+
+.titulo-momento {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.resaltado {
+  color: #ff914d;
+  font-weight: 700;
+}
+
+.texto-momento {
+  font-size: 1rem;
+  color: #e0e0e0;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.imagen-momento img {
+  width: 180px; 
+}
+
+.logo-superior {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.logo-superior img {
+  width: 100px; 
+}
+`;
+document.head.appendChild(style);
+
     const app = document.getElementById("app");
   
     const screen = document.createElement("section");
@@ -16,11 +74,11 @@ export default function renderEsperaFormularioScreen() {
         </p>
   
         <div class="imagen-momento">
-          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/splash/splash1.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJzcGxhc2gvc3BsYXNoMS5wbmciLCJpYXQiOjE3NDY0MjA5NTIsImV4cCI6MTc3Nzk1Njk1Mn0.gu4TFh4FeFPBDZJoYR5WqDUpcNFpEfR0ZPNcUgHKIaM" width="150px" />
+          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/splash//splash1.png" width="150px" />
         </div>
   
         <div class="logo-superior">
-          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/sign/logos/bershkaStyleSync.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5X2FlNWFiNTQ0LWFiMGEtNDE0ZC1hNWNjLWY2MmMwYWJlMTlmYiJ9.eyJ1cmwiOiJsb2dvcy9iZXJzaGthU3R5bGVTeW5jLnBuZyIsImlhdCI6MTc0NjQxMzMxMCwiZXhwIjoxNzc3OTQ5MzEwfQ.Cri9bAR08JOY3mfQg44pPO88wI8t8fHxZX9kSOD8MXA" width="150px" />
+          <img src="https://kjuzyqehmpbpoderrumf.supabase.co/storage/v1/object/public/logos//bershkaStyleSync.png" width="150px" />
         </div>
       </div>
     `;
