@@ -2,28 +2,31 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-// Configuración del transporter para Brevo
+// Configuración del transporter para Brevo SMTP
 const transporter = nodemailer.createTransport({
   host: process.env.BREVO_SMTP_HOST,
   port: Number(process.env.BREVO_SMTP_PORT),
-  secure: false, // STARTTLS, puerto 587
+  secure: false, // Usa STARTTLS en puerto 587
   auth: {
-    user: process.env.BREVO_SMTP_USER,
+    user: process.env.BREVO_SMTP_USER, // Este es el login SMTP de Brevo (NO tu Gmail)
     pass: process.env.BREVO_SMTP_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false, // <- Esto evita el error del certificado SSL Brevo
   },
 });
 
 /**
- * Genera el HTML bonito para el correo con la imagen y los links de compra
+ * Genera el HTML bonito para el correo con la imagen y los links de compra.
  * @param {Object} params
  * @param {string} params.userName
  * @param {string} params.mainStyle
  * @param {string} params.collageImageUrl
- * @param {Object} params.outfit
+ * @param {Array} params.items
  * @returns {string} HTML del correo
  */
-function getOutfitEmailHtml({ userName, mainStyle, collageImageUrl, outfit }) {
-  const itemsArr = Array.isArray(outfit.items) ? outfit.items : [];
+function getOutfitEmailHtml({ userName, mainStyle, collageImageUrl, items }) {
+  const itemsArr = Array.isArray(items) ? items : [];
   return `
     <div style="font-family: Arial, sans-serif; background: #fff5fa; padding: 24px;">
       <h2 style="color:#c43670">¡Hola, ${userName || 'fashionista'}!</h2>
@@ -54,29 +57,28 @@ function getOutfitEmailHtml({ userName, mainStyle, collageImageUrl, outfit }) {
 }
 
 /**
- * Envía un correo con el outfit personalizado usando Brevo.
+ * Envía un correo con el outfit personalizado usando Brevo SMTP.
  * @param {Object} params
  * @param {string} params.to - Email destinatario
  * @param {string} params.userName - Nombre del usuario
  * @param {string} params.mainStyle - Estilo principal
  * @param {string} params.collageImageUrl - URL de la imagen del collage del outfit
- * @param {Object} params.outfit - Objeto outfit (debe tener 'items')
+ * @param {Array} params.items - Array de prendas del outfit
  */
-async function sendOutfitEmail({ to, userName, mainStyle, collageImageUrl, outfit }) {
-  if (!to || !collageImageUrl || !outfit || !Array.isArray(outfit.items) || outfit.items.length === 0) {
+async function sendOutfitEmail({ to, userName, mainStyle, collageImageUrl, items }) {
+  if (!to || !collageImageUrl || !Array.isArray(items) || items.length === 0) {
     throw new Error(`Faltan datos obligatorios para el correo:
       - to: ${to}
       - collageImageUrl: ${collageImageUrl}
-      - outfit: ${JSON.stringify(outfit)}
-      - outfit.items: ${JSON.stringify(outfit.items)}
+      - items: ${JSON.stringify(items)}
     `);
   }
 
   const subject = `👗 Tu outfit Bershka StyleSync (${mainStyle || 'personalizado'})`;
-  const html = getOutfitEmailHtml({ userName, mainStyle, collageImageUrl, outfit });
+  const html = getOutfitEmailHtml({ userName, mainStyle, collageImageUrl, items });
 
   const mailOptions = {
-    from: `"Bershka StyleSync" <${process.env.BREVO_SMTP_USER}>`,
+    from: `"Bershka StyleSync" <nanila076@gmail.com>`, // Tu correo validado en Brevo
     to,
     subject,
     html,

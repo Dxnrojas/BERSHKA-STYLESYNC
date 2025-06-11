@@ -29,7 +29,16 @@ const selectOutfitController = async (req, res) => {
       return res.status(404).json({ error: "No se encontró el email del usuario" });
     }
 
-    // 3. Emitimos el evento Socket.IO a ambas apps para mostrar el outfit seleccionado
+    // 3. Validación robusta del outfit
+    if (
+      !selectedOutfit.items ||
+      !Array.isArray(selectedOutfit.items) ||
+      selectedOutfit.items.length === 0
+    ) {
+      return res.status(400).json({ error: "El outfit seleccionado no tiene prendas válidas." });
+    }
+
+    // 4. Emitimos el evento Socket.IO a ambas apps para mostrar el outfit seleccionado
     emitEvent("show-email-screen", {
       userId,
       selectedOutfit: {
@@ -47,38 +56,22 @@ const selectOutfitController = async (req, res) => {
       }
     });
 
-    // 4. Enviamos el correo al usuario con la info del outfit
+    // 5. Enviamos el correo al usuario con la info del outfit
     try {
-      // Armamos la lista de prendas con links de compra
-      const items = Array.isArray(selectedOutfit.items) ? selectedOutfit.items : [];
-      const outfitItemsHtml = items.map(
-        (item) => `<li><a href="${item.purchase_url}" target="_blank">${item.name}</a></li>`
-      ).join("");
-      const html = `
-        <div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;padding:24px;">
-          <h2>¡Hola ${user.name || "fashionista"}! 👗✨</h2>
-          <p>¡Aquí está tu outfit personalizado generado por IA con Bershka StyleSync!</p>
-          <img src="${collageImageUrl}" alt="Outfit" style="max-width:100%;border-radius:12px;box-shadow:0 2px 8px #eee;margin:16px 0;">
-          <h3>Prendas incluidas:</h3>
-          <ul style="padding-left:20px;font-size:16px;">
-            ${outfitItemsHtml}
-          </ul>
-          <p style="margin-top:24px;color:#C43670;"><strong>¡Gracias por usar Bershka StyleSync!</strong></p>
-        </div>
-      `;
-
       await sendOutfitEmail({
         to: user.email,
-        subject: "Tu outfit personalizado de Bershka StyleSync",
-        html,
+        userName: user.name,
+        mainStyle,              // <-- Incluido para el asunto/HTML
+        collageImageUrl,
+        items: selectedOutfit.items
       });
       console.log(`📧 Email enviado correctamente a ${user.email}`);
     } catch (emailErr) {
       console.error("❌ Error enviando el email:", emailErr);
-      // No interrumpimos el flujo: solo logueamos el error
+      // No interrumpimos el flujo
     }
 
-    // 5. Respuesta a frontend
+    // 6. Respuesta a frontend
     res.json({
       message: "Outfit guardado y email enviado correctamente",
       outfit: savedOutfit,
