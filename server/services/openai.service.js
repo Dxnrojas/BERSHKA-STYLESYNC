@@ -30,7 +30,7 @@ function superRobustJsonArrayParse(content) {
  */
 async function generateOutfitsWithPrompt(mainStyle, productData) {
   const prompt = `
-Create exactly 1 outfits for a user whose main style is "${mainStyle}".
+Create exactly 3 outfits for a user whose main style is "${mainStyle}".
 Each outfit must include real products as described below, grouped as either:
   - Dress-based: 1 dress (with pairing_rule "exclusive_dress") + 2 accessories
   - Set-based: 1 top, 1 bottom, 2 accessories
