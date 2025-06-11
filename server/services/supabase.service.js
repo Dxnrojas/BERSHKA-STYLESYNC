@@ -1,9 +1,9 @@
 // server/services/supabase.service.js 
 const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config(); // Load .env vars
+require('dotenv').config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY; // Usa la anon/public key aquí para operaciones normales
+const supabaseKey = process.env.SUPABASE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Supabase credentials are missing in .env');
@@ -25,7 +25,7 @@ async function getProductsByStyle(mainStyle) {
     .in('category', ['top', 'bottom', 'accessory', 'dress']);
 
   if (error) {
-    console.error('Error querying Supabase [clothes]:', error);
+    console.error('❌ Error querying Supabase [clothes]:', error);
     throw error;
   }
   return data;
@@ -39,17 +39,14 @@ async function getProductsByStyle(mainStyle) {
  * @returns {Promise<string>} URL pública de la imagen subida
  */
 async function uploadBase64ToSupabase(base64, filename, folder = '') {
-  // Decodifica el base64
   const buffer = Buffer.from(base64, 'base64');
-  // Construye el path: si quieres subcarpetas puedes agregarlas en folder
   const filePath = folder ? `${folder}/${filename}` : filename;
 
-  // Sube la imagen al bucket 'collages'
   const { data, error } = await supabase.storage
     .from('collages')
     .upload(filePath, buffer, {
       contentType: 'image/png',
-      upsert: true, // Sobre-escribe si ya existe
+      upsert: true,
     });
 
   if (error) {
@@ -57,12 +54,17 @@ async function uploadBase64ToSupabase(base64, filename, folder = '') {
     throw new Error('Error uploading image to Supabase Storage: ' + error.message);
   }
 
-  // Obtén la URL pública
   const { data: publicUrlData } = supabase.storage
     .from('collages')
     .getPublicUrl(filePath);
 
-  return publicUrlData.publicUrl;
+  // Compatibilidad: algunos SDKs antiguos devuelven {publicURL} y otros {publicUrl}
+  const url = publicUrlData?.publicUrl || publicUrlData?.publicURL;
+  if (!url) {
+    throw new Error('No se pudo obtener la URL pública del archivo subido.');
+  }
+
+  return url;
 }
 
 /**
@@ -74,6 +76,11 @@ async function uploadBase64ToSupabase(base64, filename, folder = '') {
  * @returns {Promise<object>} - Registro insertado.
  */
 async function saveUserOutfit(userId, selectedOutfit, collageImageUrl, mainStyle) {
+  // Verifica campos obligatorios antes de insertar
+  if (!userId || !selectedOutfit || !collageImageUrl || !mainStyle) {
+    throw new Error('Faltan campos obligatorios para guardar el user_outfit');
+  }
+
   const { data, error } = await supabase
     .from('user_outfits')
     .insert([{
@@ -96,5 +103,5 @@ module.exports = {
   supabase,
   getProductsByStyle,
   uploadBase64ToSupabase,
-  saveUserOutfit, // <-- ¡Nuevo export!
+  saveUserOutfit,
 };

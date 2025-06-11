@@ -52,29 +52,32 @@ export default function renderOutfitSelectionScreen({ outfits, main_style, userI
 
       // --- 1. Envía la selección al backend por POST (no solo socket)
       try {
-        await makeRequest("/api/user-outfits/select", "POST", {
-          userId: userIdLS,
-          selectedOutfit,
-          collageImageUrl,
-          mainStyle: style,
-        });
-        // (Puedes mostrar un loader/email/feedback aquí)
-
-        // --- 2. (Opcional) Emitir por socket si quieres trigger en app1/app2
-        socket.emit("outfit-selected", {
+        // ENVÍA SIEMPRE EL OBJETO OUTFIT COMPLETO Y EL COLLAGE
+        const response = await makeRequest("/api/user-outfits/select", "POST", {
           userId: userIdLS,
           selectedOutfit,
           collageImageUrl,
           mainStyle: style,
         });
 
-        // --- 3. Feedback visual
+        // Feedback visual
         app.innerHTML = `
           <section class="outfit-gracias">
             <h2 class="titulo-felicidades">¡Gracias por participar!</h2>
-            <p class="subtitulo-instruccion">Tu look favorito será enviado a tu correo pronto.<br>¡Estate pendiente!</p>
+            <p class="subtitulo-instruccion">
+              Tu look favorito será enviado a tu correo pronto.<br>¡Estate pendiente!
+            </p>
           </section>
         `;
+
+        // (Opcional) Emitir por socket si tienes flows que lo usen para app1/app2
+        // socket.emit("outfit-selected", {
+        //   userId: userIdLS,
+        //   selectedOutfit,
+        //   collageImageUrl,
+        //   mainStyle: style,
+        // });
+
       } catch (err) {
         app.innerHTML = `
           <section class="outfit-error">
