@@ -12,7 +12,7 @@ export default function renderOutfitSelectionBigScreen({ outfits, main_style }) 
     <div class="outfit-list">
       ${outfits.map((outfit, idx) => `
         <div class="outfit-opcion" data-opcion="${idx + 1}">
-          <img src="${outfit.collage_image_url}" alt="Outfit sugerido ${idx + 1}" class="imagen-outfit" />
+          <img src="${outfit.collage_image_url}" alt="Outfit sugerido ${idx + 1}" width="320px" class="imagen-outfit" />
           <ul class="outfit-items">
             ${outfit.items.map(item => `
               <li>
